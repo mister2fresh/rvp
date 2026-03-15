@@ -5,6 +5,7 @@ import { TextFlyIn } from "../primitives/TextFlyIn";
 import { NumberCounter } from "../primitives/NumberCounter";
 import { StaggeredBullets } from "../primitives/StaggeredBullets";
 import { SplitScreen } from "../primitives/SplitScreen";
+import { StatReveal } from "../primitives/StatReveal";
 
 type SceneRendererProps = {
 	scene: Scene;
@@ -91,32 +92,15 @@ function renderScene(scene: Scene, theme: Theme): React.ReactNode {
 
 		case "stat-reveal":
 			return (
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center",
-						gap: 50,
-					}}
-				>
-					<TextFlyIn
-						text={scene.statLabel}
-						fontSize={44}
-						color={theme.textColor}
-					/>
-					<TextFlyIn
-						text={scene.statValue}
-						delay={10}
-						fontSize={96}
-						color={theme.accentColor}
-					/>
-					<TextFlyIn
-						text={`${scene.contrastLabel}: ${scene.contrastValue}`}
-						delay={25}
-						fontSize={40}
-						color={theme.secondaryColor}
-					/>
-				</div>
+				<StatReveal
+					statLabel={scene.statLabel}
+					statValue={scene.statValue}
+					contrastLabel={scene.contrastLabel}
+					contrastValue={scene.contrastValue}
+					accentColor={theme.accentColor}
+					contrastColor={theme.secondaryColor}
+					textColor={theme.textColor}
+				/>
 			);
 
 		case "comparison":

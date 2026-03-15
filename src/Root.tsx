@@ -4,6 +4,7 @@ import type { VideoProps } from "./types";
 import { VideoPropsSchema } from "./types";
 import { aftersetTheme } from "./themes/afterset";
 import { KineticTextVideo } from "./templates/KineticTextVideo";
+import { StatRevealVideo } from "./templates/StatRevealVideo";
 
 const FPS = 30;
 const WIDTH = 1080;
@@ -16,6 +17,29 @@ export const RemotionRoot: React.FC = () => {
 			<Composition
 				id="AftersetKineticText"
 				component={KineticTextVideo}
+				width={WIDTH}
+				height={HEIGHT}
+				fps={FPS}
+				durationInFrames={MIN_DURATION}
+				schema={VideoPropsSchema}
+				defaultProps={{
+					scenes: [],
+					theme: aftersetTheme,
+				}}
+				calculateMetadata={({ props }) => {
+					const total = props.scenes.reduce(
+						(sum: number, s: { durationInFrames: number }) =>
+							sum + s.durationInFrames,
+						0,
+					);
+					return {
+						durationInFrames: Math.max(total, MIN_DURATION),
+					};
+				}}
+			/>
+			<Composition
+				id="AftersetStatReveal"
+				component={StatRevealVideo}
 				width={WIDTH}
 				height={HEIGHT}
 				fps={FPS}
