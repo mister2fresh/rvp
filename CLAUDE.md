@@ -117,10 +117,10 @@ npx remotion render CompositionId out/video.mp4 --props=./data.json
 ## Architecture
 ```
 src/primitives/      — reusable animation components (TextFlyIn, KineticBeat, BeforeAfter, etc.)
-src/primitives/      — SVG graphics (QrCodeGraphic, TextToJoinGraphic, NfcChipGraphic, CrowdGrid, DecayBar, CountdownRing, ProgressBar)
+src/primitives/      — SVG graphics (QrCodeGraphic, TextToJoinGraphic, NfcChipGraphic, CrowdGrid, DecayBar, CountdownRing, ProgressBar, FunnelDrain, DotGridBleed)
 src/scenes/          — SceneRenderer routes scene type → primitive
 src/templates/       — video-level components (KineticTextVideo, StatRevealVideo, ScreenRecordingVideo)
-src/compositions/    — per-video components with custom overlays and effects (TheMathProblem, FifteenMinuteWindow, etc.)
+src/compositions/    — per-video components with custom overlays and effects (TheMathProblem, FifteenMinuteWindow, FanEvaporationNumbers, etc.)
 src/themes/          — theme objects conforming to ThemeSchema
 public/data/         — JSON scene data for compositions
 ```
@@ -140,7 +140,7 @@ Compositions wrap templates with per-video creative (effects, SVG overlays, per-
 ## Creative Principles (cross-video consistency)
 - **Shared visual grammar:** screen shake, CrowdGrid, spring physics, gold/red emotional arc — reuse across videos for brand recognition
 - **Vary intensity per video:** same effect types but different configs (amplitude, frequency, with/without flash) so videos feel like a series, not copies
-- **One unique hero SVG per video:** each video gets a signature graphic that owns its concept (e.g., CountdownRing for "15 minutes", DecayBar+CrowdGrid for "math problem")
+- **One unique hero SVG per video:** each video gets a signature graphic that owns its concept (e.g., CountdownRing for "15 minutes", DecayBar+CrowdGrid for "math problem", FunnelDrain+DotGridBleed for "fan evaporation")
 - **Don't overuse product trio (QR/Text/NFC):** reserve for videos that explicitly pitch the capture mechanism — omit on emotional/CTA-driven videos to avoid feeling like a commercial
 - **Kinetic beat positioning:** use `verticalPosition` to move setup beats to "top", hero beats to "center", closing beats to "bottom" — creates visual movement and clears space for overlays
 

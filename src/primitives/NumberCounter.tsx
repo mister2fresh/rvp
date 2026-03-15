@@ -7,6 +7,7 @@ type NumberCounterProps = {
 	suffix?: string;
 	label: string;
 	color?: string;
+	fontSize?: number;
 	countDuration?: number;
 };
 
@@ -16,6 +17,7 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
 	suffix = "",
 	label,
 	color = "#E8C547",
+	fontSize = 120,
 	countDuration,
 }) => {
 	const frame = useCurrentFrame();
@@ -66,7 +68,7 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
 			</div>
 			<div
 				style={{
-					fontSize: 120,
+					fontSize,
 					fontWeight: 800,
 					fontFamily: "Bricolage Grotesque",
 					color,

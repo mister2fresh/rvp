@@ -8,8 +8,10 @@ import { StatRevealVideo } from "./templates/StatRevealVideo";
 import { ScreenRecordingVideo } from "./templates/ScreenRecordingVideo";
 import { TheMathProblem } from "./compositions/TheMathProblem";
 import { FifteenMinuteWindow } from "./compositions/FifteenMinuteWindow";
+import { FanEvaporationNumbers } from "./compositions/FanEvaporationNumbers";
 import mathProblemData from "../public/data/video-01-math-problem.json";
 import fifteenMinuteData from "../public/data/video-02-fifteen-minutes.json";
+import fanEvaporationData from "../public/data/video-03-fan-evaporation.json";
 
 const FPS = 30;
 const WIDTH = 1080;
@@ -244,6 +246,31 @@ export const RemotionRoot: React.FC = () => {
 					scenes: fifteenMinuteData.scenes as VideoProps["scenes"],
 					theme: aftersetTheme,
 					audioFile: "FifteenMinuteWindowAudio.mp3",
+					transition: { style: "fade", durationInFrames: 15 },
+				}}
+				calculateMetadata={({ props }) => {
+					const total = props.scenes.reduce(
+						(sum: number, s: { durationInFrames: number }) =>
+							sum + s.durationInFrames,
+						0,
+					);
+					return {
+						durationInFrames: Math.max(total, MIN_DURATION),
+					};
+				}}
+			/>
+			<Composition
+				id="FanEvaporationNumbers"
+				component={FanEvaporationNumbers}
+				width={WIDTH}
+				height={HEIGHT}
+				fps={FPS}
+				durationInFrames={MIN_DURATION}
+				schema={VideoPropsSchema}
+				defaultProps={{
+					scenes: fanEvaporationData.scenes as VideoProps["scenes"],
+					theme: aftersetTheme,
+					audioFile: "FanEvaporationNumber.mp3",
 					transition: { style: "fade", durationInFrames: 15 },
 				}}
 				calculateMetadata={({ props }) => {

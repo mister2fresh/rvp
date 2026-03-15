@@ -1,0 +1,134 @@
+{
+  "scenes": [
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "Somewhere in last night's crowd",
+          "emphasisWord": "crowd",
+          "emphasisColor": "#E8C547",
+          "fontSize": 72,
+          "animation": "fade",
+          "holdFrames": 40
+        },
+        {
+          "text": "was your biggest fan.",
+          "emphasisWord": "biggest",
+          "emphasisColor": "#E8C547",
+          "fontSize": 80,
+          "animation": "spring-up",
+          "holdFrames": 35
+        },
+        {
+          "text": "They just didn't know how to find you after.",
+          "emphasisWord": "find you",
+          "emphasisColor": "#3b82f6",
+          "fontSize": 60,
+          "animation": "fade",
+          "holdFrames": 80
+        }
+      ],
+      "durationInFrames": 205
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "If you play 100 shows to 80 people",
+          "fontSize": 56,
+          "animation": "fade",
+          "verticalPosition": "bottom",
+          "holdFrames": 60
+        }
+      ],
+      "durationInFrames": 85
+    },
+    {
+      "type": "stat",
+      "label": "ANNUAL LIVE AUDIENCE",
+      "value": 8000,
+      "prefix": "",
+      "suffix": "",
+      "durationInFrames": 120
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "How many end up on your email list?",
+          "emphasisWord": "email",
+          "emphasisColor": "#E8C547",
+          "fontSize": 64,
+          "animation": "spring-up",
+          "holdFrames": 60
+        }
+      ],
+      "durationInFrames": 90
+    },
+    {
+      "type": "stat",
+      "label": "ON THE EMAIL LIST",
+      "value": 100,
+      "prefix": "under ",
+      "suffix": "",
+      "durationInFrames": 75
+    },
+    {
+      "type": "stat",
+      "label": "YOUR LOSS RATE",
+      "value": 98.7,
+      "prefix": "",
+      "suffix": "%",
+      "durationInFrames": 68
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "Email converts 40× better than social",
+          "emphasisWord": "40×",
+          "emphasisColor": "#E8C547",
+          "fontSize": 76,
+          "animation": "scale-pop",
+          "holdFrames": 75
+        }
+      ],
+      "durationInFrames": 100
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "Your most valuable channel",
+          "fontSize": 60,
+          "animation": "spring-up",
+          "holdFrames": 40
+        },
+        {
+          "text": "is the one you're not using after shows.",
+          "emphasisWord": "not using",
+          "emphasisColor": "#ef4444",
+          "fontSize": 64,
+          "animation": "spring-up",
+          "holdFrames": 55
+        }
+      ],
+      "durationInFrames": 145
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "Connect with every fan before they leave.",
+          "emphasisWord": "every",
+          "emphasisColor": "#E8C547",
+          "fontSize": 68,
+          "animation": "spring-up",
+          "verticalPosition": "top",
+          "holdFrames": 70
+        }
+      ],
+      "durationInFrames": 120
+    }
+  ]
+}
