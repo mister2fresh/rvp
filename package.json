@@ -1,0 +1,39 @@
+{
+  "name": "rvp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "npx remotion studio",
+    "build": "npx remotion render",
+    "typecheck": "npx tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mister2fresh/rvp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mister2fresh/rvp/issues"
+  },
+  "homepage": "https://github.com/mister2fresh/rvp#readme",
+  "dependencies": {
+    "@remotion/cli": "4.0.435",
+    "@remotion/media": "4.0.435",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.435",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
+    "typescript": "5.7.3"
+  }
+}
