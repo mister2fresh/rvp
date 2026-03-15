@@ -106,20 +106,34 @@ type KineticBeatsProps = {
 	beats: KineticBeatType[];
 };
 
+const VERTICAL_ALIGN: Record<string, string> = {
+	top: "flex-start",
+	center: "center",
+	bottom: "flex-end",
+};
+
+const VERTICAL_PADDING: Record<string, string> = {
+	top: "320px 0 0 0",
+	center: "0",
+	bottom: "0 0 320px 0",
+};
+
 export const KineticBeats: React.FC<KineticBeatsProps> = ({ beats }) => {
 	return (
 		<Series>
 			{beats.map((beat, i) => {
 				const dur = ENTER_FRAMES + (beat.holdFrames ?? 45) + EXIT_FRAMES;
+				const pos = beat.verticalPosition ?? "center";
 				return (
 					<Series.Sequence key={i} durationInFrames={dur}>
 						<div
 							style={{
 								display: "flex",
-								justifyContent: "center",
+								justifyContent: VERTICAL_ALIGN[pos],
 								alignItems: "center",
 								width: "100%",
 								height: "100%",
+								padding: VERTICAL_PADDING[pos],
 							}}
 						>
 							<BeatContent {...beat} durationInFrames={dur} />

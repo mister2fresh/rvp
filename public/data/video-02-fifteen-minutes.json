@@ -1,0 +1,131 @@
+{
+  "scenes": [
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "You have exactly",
+          "fontSize": 72,
+          "animation": "fade",
+          "holdFrames": 25,
+          "verticalPosition": "top"
+        },
+        {
+          "text": "15 minutes",
+          "emphasisWord": "15",
+          "emphasisColor": "#E8C547",
+          "fontSize": 108,
+          "animation": "scale-pop",
+          "holdFrames": 50,
+          "verticalPosition": "center"
+        }
+      ],
+      "durationInFrames": 120
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "After your set,",
+          "fontSize": 64,
+          "animation": "spring-up",
+          "holdFrames": 30,
+          "verticalPosition": "top"
+        },
+        {
+          "text": "fans are still feeling it",
+          "emphasisWord": "feeling",
+          "emphasisColor": "#E8C547",
+          "fontSize": 72,
+          "animation": "spring-up",
+          "holdFrames": 40,
+          "verticalPosition": "center"
+        }
+      ],
+      "durationInFrames": 115
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "But you don't ask.",
+          "emphasisWord": "don't",
+          "emphasisColor": "#ef4444",
+          "fontSize": 80,
+          "animation": "fade",
+          "holdFrames": 45,
+          "verticalPosition": "center"
+        }
+      ],
+      "durationInFrames": 70
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "48 hours later...",
+          "emphasisWord": "48",
+          "emphasisColor": "#ef4444",
+          "fontSize": 76,
+          "animation": "spring-up",
+          "holdFrames": 35,
+          "verticalPosition": "top"
+        },
+        {
+          "text": "they forgot your name",
+          "emphasisWord": "forgot",
+          "emphasisColor": "#ef4444",
+          "fontSize": 84,
+          "animation": "scale-pop",
+          "holdFrames": 50,
+          "verticalPosition": "center"
+        }
+      ],
+      "durationInFrames": 120
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "No tool exists for",
+          "fontSize": 60,
+          "animation": "fade",
+          "holdFrames": 25,
+          "verticalPosition": "top"
+        },
+        {
+          "text": "that window",
+          "emphasisWord": "window",
+          "emphasisColor": "#E8C547",
+          "fontSize": 84,
+          "animation": "spring-up",
+          "holdFrames": 35,
+          "verticalPosition": "center"
+        }
+      ],
+      "durationInFrames": 95
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "Until now.",
+          "emphasisWord": "now",
+          "emphasisColor": "#E8C547",
+          "fontSize": 96,
+          "animation": "scale-pop",
+          "holdFrames": 40,
+          "verticalPosition": "center"
+        },
+        {
+          "text": "Link in bio.",
+          "fontSize": 56,
+          "animation": "fade",
+          "holdFrames": 35,
+          "verticalPosition": "bottom"
+        }
+      ],
+      "durationInFrames": 110
+    }
+  ]
+}

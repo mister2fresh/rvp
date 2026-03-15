@@ -62,6 +62,7 @@ const KineticBeatSchema = z.object({
   fontSize: z.number().default(80),
   animation: z.enum(["spring-up", "scale-pop", "slide-left", "fade"]).default("spring-up"),
   holdFrames: z.number().default(45),
+  verticalPosition: z.enum(["top", "center", "bottom"]).optional(),
 });
 
 const KineticSceneSchema = z.object({

@@ -106,7 +106,7 @@ npx remotion render CompositionId out/video.mp4 --props=./data.json
 - `comparison` — split-screen left (red/danger) vs right (gold)
 - `cta` — call-to-action text + optional subtext
 - `quote` — glass card with decorative quote mark + attribution
-- `kinetic` — sequenced beats (2–7 words each) with emphasis word highlighting; 4 animation types: spring-up, scale-pop, slide-left, fade; per-beat timing: 15 enter + holdFrames + 10 exit
+- `kinetic` — sequenced beats (2–7 words each) with emphasis word highlighting; 4 animation types: spring-up, scale-pop, slide-left, fade; per-beat timing: 15 enter + holdFrames + 10 exit; optional `verticalPosition`: "top" | "center" | "bottom" (default center) to vary beat placement on screen
 - `beforeAfter` — temporal before/after with gold wipe transition at midpoint; before=red accents, after=gold accents
 
 ## Theme Shape
@@ -117,10 +117,10 @@ npx remotion render CompositionId out/video.mp4 --props=./data.json
 ## Architecture
 ```
 src/primitives/      — reusable animation components (TextFlyIn, KineticBeat, BeforeAfter, etc.)
-src/primitives/      — SVG graphics (QrCodeGraphic, TextToJoinGraphic, NfcChipGraphic, CrowdGrid, DecayBar)
+src/primitives/      — SVG graphics (QrCodeGraphic, TextToJoinGraphic, NfcChipGraphic, CrowdGrid, DecayBar, CountdownRing, ProgressBar)
 src/scenes/          — SceneRenderer routes scene type → primitive
 src/templates/       — video-level components (KineticTextVideo, StatRevealVideo, ScreenRecordingVideo)
-src/compositions/    — per-video components with custom overlays and effects (TheMathProblem, etc.)
+src/compositions/    — per-video components with custom overlays and effects (TheMathProblem, FifteenMinuteWindow, etc.)
 src/themes/          — theme objects conforming to ThemeSchema
 public/data/         — JSON scene data for compositions
 ```
@@ -134,6 +134,15 @@ Compositions wrap templates with per-video creative (effects, SVG overlays, per-
 - Per-scene transition styles via array (wipe for spatial, none/hard-cut into stat counters, fade for emotional)
 - Custom effects (screen shake, white flash) computed from `computeSceneStarts()` frame offsets
 - Scene data lives in `public/data/` JSON files, imported into Root.tsx
+- Overlays must avoid the center text zone — use CSS mask gradients or flex-end/flex-start positioning
+- CrowdGrid overlays use `maskImage` with transparent center band (38%–62%) to frame text without overlap
+
+## Creative Principles (cross-video consistency)
+- **Shared visual grammar:** screen shake, CrowdGrid, spring physics, gold/red emotional arc — reuse across videos for brand recognition
+- **Vary intensity per video:** same effect types but different configs (amplitude, frequency, with/without flash) so videos feel like a series, not copies
+- **One unique hero SVG per video:** each video gets a signature graphic that owns its concept (e.g., CountdownRing for "15 minutes", DecayBar+CrowdGrid for "math problem")
+- **Don't overuse product trio (QR/Text/NFC):** reserve for videos that explicitly pitch the capture mechanism — omit on emotional/CTA-driven videos to avoid feeling like a commercial
+- **Kinetic beat positioning:** use `verticalPosition` to move setup beats to "top", hero beats to "center", closing beats to "bottom" — creates visual movement and clears space for overlays
 
 ## Stack
 - TypeScript, Remotion 4.x, React 18, Zod
