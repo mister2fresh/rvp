@@ -25,7 +25,7 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
 		config: { damping: 60, stiffness: 80 },
 	});
 
-	const num = Math.floor(interpolate(progress, [0, 1], [0, target]));
+	const num = Math.round(interpolate(progress, [0, 1], [0, target]));
 
 	const labelDriver = spring({
 		frame: frame - 5,

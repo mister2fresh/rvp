@@ -39,7 +39,7 @@ const y = interpolate(driver, [0, 1], [100, 0]);
 
 // Number counter
 const progress = spring({frame, fps, durationInFrames: 45});
-const num = Math.floor(interpolate(progress, [0, 1], [0, target]));
+const num = Math.round(interpolate(progress, [0, 1], [0, target]));
 
 // Staggered items
 items.map((item, i) => {
@@ -116,14 +116,24 @@ npx remotion render CompositionId out/video.mp4 --props=./data.json
 
 ## Architecture
 ```
-src/primitives/   — reusable animation components (TextFlyIn, KineticBeat, BeforeAfter, etc.)
-src/scenes/       — SceneRenderer routes scene type → primitive
-src/templates/    — video-level components (KineticTextVideo, StatRevealVideo, ScreenRecordingVideo)
-src/themes/       — theme objects conforming to ThemeSchema
+src/primitives/      — reusable animation components (TextFlyIn, KineticBeat, BeforeAfter, etc.)
+src/primitives/      — SVG graphics (QrCodeGraphic, TextToJoinGraphic, NfcChipGraphic, CrowdGrid, DecayBar)
+src/scenes/          — SceneRenderer routes scene type → primitive
+src/templates/       — video-level components (KineticTextVideo, StatRevealVideo, ScreenRecordingVideo)
+src/compositions/    — per-video components with custom overlays and effects (TheMathProblem, etc.)
+src/themes/          — theme objects conforming to ThemeSchema
+public/data/         — JSON scene data for compositions
 ```
 - All scenes wrapped in `SceneBackground` (dual ambient glows + CRT scan lines)
-- All videos include `LinkInBio` watermark ("afterset.net", bottom-right)
+- All videos include `LinkInBio` watermark ("afterset.net", bottom-right, `delayFrames={0}` for immediate)
 - Templates use `TransitionSeries` from `@remotion/transitions`
+
+## Composition Pattern
+Compositions wrap templates with per-video creative (effects, SVG overlays, per-transition styles):
+- SVG graphics are `<Sequence>` overlays positioned with padding, NOT embedded in scene schemas
+- Per-scene transition styles via array (wipe for spatial, none/hard-cut into stat counters, fade for emotional)
+- Custom effects (screen shake, white flash) computed from `computeSceneStarts()` frame offsets
+- Scene data lives in `public/data/` JSON files, imported into Root.tsx
 
 ## Stack
 - TypeScript, Remotion 4.x, React 18, Zod

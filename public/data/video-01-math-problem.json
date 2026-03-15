@@ -1,0 +1,112 @@
+{
+  "scenes": [
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "Your shows are losing you fans",
+          "emphasisWord": "losing",
+          "emphasisColor": "#ef4444",
+          "fontSize": 110,
+          "animation": "spring-up",
+          "holdFrames": 45
+        }
+      ],
+      "durationInFrames": 80
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "100 shows × 80 fans",
+          "emphasisWord": "100",
+          "emphasisColor": "#3b82f6",
+          "fontSize": 100,
+          "animation": "scale-pop",
+          "holdFrames": 25
+        },
+        {
+          "text": "= 8,000 people",
+          "emphasisWord": "8,000",
+          "emphasisColor": "#E8C547",
+          "fontSize": 120,
+          "animation": "spring-up",
+          "holdFrames": 30
+        }
+      ],
+      "durationInFrames": 90
+    },
+    {
+      "type": "stat",
+      "label": "HEARD YOUR MUSIC THIS YEAR",
+      "value": 8000,
+      "prefix": "",
+      "suffix": "",
+      "durationInFrames": 90
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "How many can you reach tomorrow?",
+          "emphasisWord": "tomorrow",
+          "emphasisColor": "#E8C547",
+          "fontSize": 96,
+          "animation": "fade",
+          "holdFrames": 40
+        }
+      ],
+      "durationInFrames": 70
+    },
+    {
+      "type": "stat",
+      "label": "THAT'S IT.",
+      "value": 50,
+      "prefix": "~",
+      "suffix": "",
+      "durationInFrames": 75
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "99% gone.",
+          "emphasisWord": "99%",
+          "emphasisColor": "#ef4444",
+          "fontSize": 140,
+          "animation": "scale-pop",
+          "holdFrames": 55
+        }
+      ],
+      "durationInFrames": 90
+    },
+    {
+      "type": "kinetic",
+      "beats": [
+        {
+          "text": "QR. Text. Tap.",
+          "emphasisWord": "Tap",
+          "emphasisColor": "#E8C547",
+          "fontSize": 120,
+          "animation": "scale-pop",
+          "holdFrames": 25
+        },
+        {
+          "text": "Capture every fan. Automatically.",
+          "emphasisWord": "every fan",
+          "emphasisColor": "#E8C547",
+          "fontSize": 96,
+          "animation": "fade",
+          "holdFrames": 40
+        }
+      ],
+      "durationInFrames": 110
+    },
+    {
+      "type": "cta",
+      "text": "Stop losing fans.",
+      "subtext": "Link in bio",
+      "durationInFrames": 80
+    }
+  ]
+}
