@@ -43,6 +43,7 @@ export const TheMathProblem: React.FC<VideoProps> = ({
 	transition,
 }) => {
 	const frame = useCurrentFrame();
+	const { durationInFrames } = useVideoConfig();
 	const transitionDuration = transition?.durationInFrames ?? 15;
 	const sceneStarts = computeSceneStarts(scenes, transitionDuration);
 
@@ -203,6 +204,23 @@ export const TheMathProblem: React.FC<VideoProps> = ({
 					}
 				/>
 			)}
+
+			<Html5Audio
+				src={staticFile("v1-math-problem-bg.mp3")}
+				volume={(f) => {
+					const fadeIn = interpolate(f, [0, 30], [0, 0.15], {
+						extrapolateRight: "clamp",
+						extrapolateLeft: "clamp",
+					});
+					const fadeOut = interpolate(
+						f,
+						[durationInFrames - 60, durationInFrames],
+						[0.15, 0],
+						{ extrapolateRight: "clamp", extrapolateLeft: "clamp" },
+					);
+					return Math.min(fadeIn, fadeOut);
+				}}
+			/>
 		</AbsoluteFill>
 	);
 };
