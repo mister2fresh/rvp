@@ -3,7 +3,9 @@ import {
 	AbsoluteFill,
 	Sequence,
 	useCurrentFrame,
+	useVideoConfig,
 	interpolate,
+	spring,
 	Html5Audio,
 	staticFile,
 } from "remotion";
@@ -14,6 +16,9 @@ import { LinkInBio } from "../primitives/LinkInBio";
 import { getPresentation } from "../primitives/getTransition";
 import { CountdownRing } from "../primitives/CountdownRing";
 import { CrowdGrid } from "../primitives/CrowdGrid";
+import { QrCodeGraphic } from "../primitives/QrCodeGraphic";
+import { TextToJoinGraphic } from "../primitives/TextToJoinGraphic";
+import { NfcChipGraphic } from "../primitives/NfcChipGraphic";
 
 const SHAKE_FRAMES = 12;
 const SHAKE_AMPLITUDE = 3.5;
@@ -35,6 +40,7 @@ export const FifteenMinuteWindow: React.FC<VideoProps> = ({
 	transition,
 }) => {
 	const frame = useCurrentFrame();
+	const { durationInFrames } = useVideoConfig();
 	const transitionDuration = transition?.durationInFrames ?? 15;
 	const sceneStarts = computeSceneStarts(scenes, transitionDuration);
 
@@ -132,6 +138,52 @@ export const FifteenMinuteWindow: React.FC<VideoProps> = ({
 				</Sequence>
 			</AbsoluteFill>
 
+			{/* Last scene: QR / Text / NFC trio springs in with "Link in bio" */}
+			<Sequence
+				from={sceneStarts[scenes.length - 1] + 40}
+				durationInFrames={scenes[scenes.length - 1].durationInFrames - 40}
+			>
+				<AbsoluteFill
+					style={{
+						justifyContent: "flex-end",
+						alignItems: "center",
+						paddingBottom: 300,
+						pointerEvents: "none",
+					}}
+				>
+					<div
+						style={{
+							display: "flex",
+							gap: 48,
+							alignItems: "center",
+							justifyContent: "center",
+						}}
+					>
+						<CaptureIcon delay={0}>
+							<QrCodeGraphic
+								size={160}
+								color={theme.primaryColor}
+								glowColor={theme.primaryColor}
+							/>
+						</CaptureIcon>
+						<CaptureIcon delay={6}>
+							<TextToJoinGraphic
+								size={160}
+								color={theme.primaryColor}
+								glowColor={theme.primaryColor}
+							/>
+						</CaptureIcon>
+						<CaptureIcon delay={12}>
+							<NfcChipGraphic
+								size={160}
+								color={theme.primaryColor}
+								glowColor={theme.primaryColor}
+							/>
+						</CaptureIcon>
+					</div>
+				</AbsoluteFill>
+			</Sequence>
+
 			<LinkInBio delayFrames={0} />
 
 			{audioFile && (
@@ -145,7 +197,43 @@ export const FifteenMinuteWindow: React.FC<VideoProps> = ({
 					}
 				/>
 			)}
+
+			<Html5Audio
+				src={staticFile("FifteenMinuteWindowSong.mp3")}
+				volume={(f) => {
+					const fadeIn = interpolate(f, [0, 30], [0, 0.15], {
+						extrapolateRight: "clamp",
+						extrapolateLeft: "clamp",
+					});
+					const fadeOut = interpolate(
+						f,
+						[durationInFrames - 60, durationInFrames],
+						[0.15, 0],
+						{ extrapolateRight: "clamp", extrapolateLeft: "clamp" },
+					);
+					return Math.min(fadeIn, fadeOut);
+				}}
+			/>
 		</AbsoluteFill>
+	);
+};
+
+const CaptureIcon: React.FC<{
+	delay: number;
+	children: React.ReactNode;
+}> = ({ delay, children }) => {
+	const frame = useCurrentFrame();
+	const { fps } = useVideoConfig();
+	const driver = spring({
+		frame: frame - delay,
+		fps,
+		config: { damping: 12, stiffness: 120 },
+	});
+	const opacity = interpolate(driver, [0, 1], [0, 1]);
+	const y = interpolate(driver, [0, 1], [30, 0]);
+
+	return (
+		<div style={{ opacity, transform: `translateY(${y}px)` }}>{children}</div>
 	);
 };
 

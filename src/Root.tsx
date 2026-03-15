@@ -243,6 +243,7 @@ export const RemotionRoot: React.FC = () => {
 				defaultProps={{
 					scenes: fifteenMinuteData.scenes as VideoProps["scenes"],
 					theme: aftersetTheme,
+					audioFile: "FifteenMinuteWindowAudio.mp3",
 					transition: { style: "fade", durationInFrames: 15 },
 				}}
 				calculateMetadata={({ props }) => {

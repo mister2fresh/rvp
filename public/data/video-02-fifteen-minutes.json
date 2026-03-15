@@ -121,11 +121,11 @@
           "text": "Link in bio.",
           "fontSize": 56,
           "animation": "fade",
-          "holdFrames": 35,
+          "holdFrames": 85,
           "verticalPosition": "bottom"
         }
       ],
-      "durationInFrames": 110
+      "durationInFrames": 160
     }
   ]
 }
