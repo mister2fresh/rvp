@@ -6,6 +6,8 @@ type TextFlyInProps = {
 	delay?: number;
 	fontSize?: number;
 	color?: string;
+	fontFamily?: string;
+	fontWeight?: number;
 };
 
 export const TextFlyIn: React.FC<TextFlyInProps> = ({
@@ -13,6 +15,8 @@ export const TextFlyIn: React.FC<TextFlyInProps> = ({
 	delay = 0,
 	fontSize = 64,
 	color = "#ffffff",
+	fontFamily = "Bricolage Grotesque",
+	fontWeight = 700,
 }) => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
@@ -20,12 +24,12 @@ export const TextFlyIn: React.FC<TextFlyInProps> = ({
 	const driver = spring({
 		frame: frame - delay,
 		fps,
-		config: { damping: 12, stiffness: 100 },
+		config: { damping: 12, stiffness: 120 },
 	});
 
 	const opacity = interpolate(driver, [0, 1], [0, 1]);
-	const translateY = interpolate(driver, [0, 1], [80, 0]);
-	const scale = interpolate(driver, [0, 1], [0.8, 1]);
+	const translateY = interpolate(driver, [0, 1], [60, 0]);
+	const scale = interpolate(driver, [0, 1], [0.85, 1]);
 
 	return (
 		<div
@@ -33,13 +37,15 @@ export const TextFlyIn: React.FC<TextFlyInProps> = ({
 				opacity,
 				transform: `translateY(${translateY}px) scale(${scale})`,
 				fontSize,
-				fontWeight: 700,
+				fontWeight,
+				fontFamily,
 				color,
 				textAlign: "center",
-				padding: "0 60px",
+				padding: "0 72px",
 				width: "100%",
 				boxSizing: "border-box",
-				textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+				lineHeight: 1.15,
+				letterSpacing: "-0.02em",
 			}}
 		>
 			{text}

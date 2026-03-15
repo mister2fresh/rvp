@@ -16,7 +16,7 @@ export const SplitScreen: React.FC<SplitScreenProps> = ({
 	leftItems,
 	rightItems,
 	leftColor = "#ff6b6b",
-	rightColor = "#00FF88",
+	rightColor = "#E8C547",
 }) => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
@@ -24,7 +24,7 @@ export const SplitScreen: React.FC<SplitScreenProps> = ({
 	const dividerDriver = spring({
 		frame,
 		fps,
-		config: { damping: 20, stiffness: 80 },
+		config: { damping: 12, stiffness: 120 },
 	});
 	const dividerScale = interpolate(dividerDriver, [0, 1], [0, 1]);
 
@@ -39,16 +39,18 @@ export const SplitScreen: React.FC<SplitScreenProps> = ({
 				flex: 1,
 				display: "flex",
 				flexDirection: "column",
-				padding: "40px 30px",
+				padding: "40px 28px",
 				gap: 20,
 			}}
 		>
 			<div
 				style={{
-					fontSize: 44,
-					fontWeight: 700,
+					fontSize: 24,
+					fontWeight: 400,
+					fontFamily: "Space Mono",
 					color,
-					textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+					textTransform: "uppercase",
+					letterSpacing: "0.1em",
 				}}
 			>
 				{title}
@@ -57,17 +59,21 @@ export const SplitScreen: React.FC<SplitScreenProps> = ({
 				const d = spring({
 					frame: frame - baseDelay - i * 10,
 					fps,
-					config: { damping: 14 },
+					config: { damping: 12, stiffness: 120 },
 				});
 				const opacity = interpolate(d, [0, 1], [0, 1]);
+				const y = interpolate(d, [0, 1], [20, 0]);
 				return (
 					<div
 						key={i}
 						style={{
-							fontSize: 36,
-							color: "rgba(255,255,255,0.9)",
+							fontSize: 34,
+							fontFamily: "DM Sans",
+							fontWeight: 500,
+							color: "rgba(255, 255, 255, 0.85)",
 							opacity,
-							textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+							transform: `translateY(${y}px)`,
+							lineHeight: 1.3,
 						}}
 					>
 						{item}
@@ -89,8 +95,9 @@ export const SplitScreen: React.FC<SplitScreenProps> = ({
 			{renderPanel(leftTitle, leftItems, leftColor, 15)}
 			<div
 				style={{
-					width: 4,
-					background: "rgba(255,255,255,0.3)",
+					width: 2,
+					background:
+						"linear-gradient(180deg, transparent 10%, rgba(255,255,255,0.15) 50%, transparent 90%)",
 					transform: `scaleY(${dividerScale})`,
 					transformOrigin: "center",
 				}}

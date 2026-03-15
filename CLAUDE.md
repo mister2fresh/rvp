@@ -82,10 +82,10 @@ npx remotion render CompositionId out/video.mp4 --props=./data.json
 10. defaultProps required on `<Composition>` when component has props
 
 ## Spring Configs
-- Bouncy: `damping: 10–15`
-- Smooth: `damping: 50–100`
-- Snappy: `mass: 0.5`
-- Heavy: `mass: 1–2`
+- Standard entrance: `{ damping: 12, stiffness: 120 }` — used by all entrance animations
+- Smooth counting: `{ damping: 60, stiffness: 80 }` — NumberCounter only
+- Kinetic beats: `{ damping: 12, stiffness: 120, mass: 0.6 }` — KineticBeat
+- Bouncy contrast: `{ damping: 10, stiffness: 200, mass: 0.8 }` — StatReveal contrast value
 
 ## V4 Breaking Changes (vs older tutorials)
 - `<Audio>` → `<Html5Audio>` (new `<Audio>` is experimental in @remotion/media)
@@ -96,6 +96,34 @@ npx remotion render CompositionId out/video.mp4 --props=./data.json
 - `quality` → `jpegQuality`
 - `setImageFormat()` → `setVideoImageFormat()` + `setStillImageFormat()`
 - FFmpeg is bundled — no more ensureFfmpeg()
+
+## Scene Types
+9 types in `SceneSchema` discriminated union (`src/types.ts`):
+- `title` — heading + optional subtitle
+- `bullets` — heading + staggered items with optional emoji
+- `stat` — animated number counter with label, prefix/suffix
+- `stat-reveal` — primary stat + delayed contrast stat with bounce
+- `comparison` — split-screen left (red/danger) vs right (gold)
+- `cta` — call-to-action text + optional subtext
+- `quote` — glass card with decorative quote mark + attribution
+- `kinetic` — sequenced beats (2–7 words each) with emphasis word highlighting; 4 animation types: spring-up, scale-pop, slide-left, fade; per-beat timing: 15 enter + holdFrames + 10 exit
+- `beforeAfter` — temporal before/after with gold wipe transition at midpoint; before=red accents, after=gold accents
+
+## Theme Shape
+`ThemeSchema` has 13 fields — see `src/themes/afterset.ts` for canonical values:
+- Colors: `primaryColor` (gold), `secondaryColor` (blue), `backgroundColor` (midnight), `surfaceColor`, `textColor`, `textSecondary`, `textMuted`, `accentColor`, `errorColor` (red), `successColor` (green)
+- Fonts: `fontFamily` (DM Sans), `fontFamilyDisplay` (Bricolage Grotesque), `fontMono` (Space Mono)
+
+## Architecture
+```
+src/primitives/   — reusable animation components (TextFlyIn, KineticBeat, BeforeAfter, etc.)
+src/scenes/       — SceneRenderer routes scene type → primitive
+src/templates/    — video-level components (KineticTextVideo, StatRevealVideo, ScreenRecordingVideo)
+src/themes/       — theme objects conforming to ThemeSchema
+```
+- All scenes wrapped in `SceneBackground` (dual ambient glows + CRT scan lines)
+- All videos include `LinkInBio` watermark ("afterset.net", bottom-right)
+- Templates use `TransitionSeries` from `@remotion/transitions`
 
 ## Stack
 - TypeScript, Remotion 4.x, React 18, Zod

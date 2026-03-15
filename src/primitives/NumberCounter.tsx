@@ -14,7 +14,7 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
 	prefix = "",
 	suffix = "",
 	label,
-	color = "#00FF88",
+	color = "#E8C547",
 }) => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
@@ -27,10 +27,16 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
 
 	const num = Math.floor(interpolate(progress, [0, 1], [0, target]));
 
-	const labelOpacity = interpolate(frame, [10, 25], [0, 1], {
-		extrapolateRight: "clamp",
-		extrapolateLeft: "clamp",
+	const labelDriver = spring({
+		frame: frame - 5,
+		fps,
+		config: { damping: 12, stiffness: 120 },
 	});
+	const labelOpacity = interpolate(labelDriver, [0, 1], [0, 1]);
+	const labelY = interpolate(labelDriver, [0, 1], [20, 0]);
+
+	// Glow pulse that follows the count
+	const glowOpacity = interpolate(progress, [0, 0.5, 1], [0, 0.6, 0.3]);
 
 	return (
 		<div
@@ -38,30 +44,36 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
-				gap: 20,
+				gap: 24,
 			}}
 		>
 			<div
 				style={{
-					fontSize: 96,
+					opacity: labelOpacity,
+					transform: `translateY(${labelY}px)`,
+					fontSize: 28,
+					fontFamily: "Space Mono",
+					fontWeight: 400,
+					color: "rgba(255, 255, 255, 0.5)",
+					textTransform: "uppercase",
+					letterSpacing: "0.15em",
+				}}
+			>
+				{label}
+			</div>
+			<div
+				style={{
+					fontSize: 120,
 					fontWeight: 800,
+					fontFamily: "Bricolage Grotesque",
 					color,
-					textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+					textShadow: `0 0 60px ${color}${Math.round(glowOpacity * 255).toString(16).padStart(2, "0")}, 0 4px 20px rgba(0,0,0,0.5)`,
+					lineHeight: 1,
 				}}
 			>
 				{prefix}
 				{num.toLocaleString()}
 				{suffix}
-			</div>
-			<div
-				style={{
-					fontSize: 40,
-					color: "rgba(255,255,255,0.8)",
-					opacity: labelOpacity,
-					textShadow: "0 4px 20px rgba(0,0,0,0.5)",
-				}}
-			>
-				{label}
 			</div>
 		</div>
 	);

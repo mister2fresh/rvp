@@ -24,8 +24,45 @@ export const RemotionRoot: React.FC = () => {
 				durationInFrames={MIN_DURATION}
 				schema={VideoPropsSchema}
 				defaultProps={{
-					scenes: [],
+					scenes: [
+						{
+							type: "title" as const,
+							text: "Why 90% of Startups Fail",
+							subtitle: "And how to beat the odds",
+							durationInFrames: 90,
+						},
+						{
+							type: "bullets" as const,
+							heading: "Top 3 Reasons",
+							items: [
+								{ text: "No market need", emoji: "🚫" },
+								{ text: "Ran out of cash", emoji: "💸" },
+								{ text: "Wrong team", emoji: "👥" },
+							],
+							durationInFrames: 120,
+						},
+						{
+							type: "stat" as const,
+							label: "Startups that pivot",
+							value: 73,
+							suffix: "%",
+							durationInFrames: 90,
+						},
+						{
+							type: "quote" as const,
+							quote: "The best way to predict the future is to create it.",
+							attribution: "Peter Drucker",
+							durationInFrames: 90,
+						},
+						{
+							type: "cta" as const,
+							text: "Follow for more",
+							subtext: "@afterset",
+							durationInFrames: 60,
+						},
+					],
 					theme: aftersetTheme,
+					transition: { style: "fade", durationInFrames: 15 },
 				}}
 				calculateMetadata={({ props }) => {
 					const total = props.scenes.reduce(
@@ -49,6 +86,7 @@ export const RemotionRoot: React.FC = () => {
 				defaultProps={{
 					scenes: [],
 					theme: aftersetTheme,
+					transition: { style: "fade", durationInFrames: 15 },
 				}}
 				calculateMetadata={({ props }) => {
 					const total = props.scenes.reduce(

@@ -10,7 +10,7 @@ export const LinkInBio: React.FC<LinkInBioProps> = ({
 }) => {
 	const frame = useCurrentFrame();
 
-	const opacity = interpolate(frame, [delayFrames, delayFrames + 15], [0, 0.6], {
+	const opacity = interpolate(frame, [delayFrames, delayFrames + 15], [0, 0.3], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
@@ -19,17 +19,18 @@ export const LinkInBio: React.FC<LinkInBioProps> = ({
 		<div
 			style={{
 				position: "absolute",
-				bottom: 24,
-				right: 32,
+				bottom: 28,
+				right: 36,
 				fontSize: 24,
-				fontWeight: 600,
+				fontWeight: 400,
+				fontFamily: "Space Mono",
 				color: "#ffffff",
 				opacity,
-				textShadow: "0 2px 8px rgba(0,0,0,0.8)",
-				fontFamily: "Inter",
+				letterSpacing: "0.05em",
+				textTransform: "uppercase",
 			}}
 		>
-			Link in bio
+			afterset.net
 		</div>
 	);
 };

@@ -55,6 +55,36 @@ const QuoteSceneSchema = z.object({
   durationInFrames: z.number(),
 });
 
+const KineticBeatSchema = z.object({
+  text: z.string(),
+  emphasisWord: z.string().optional(),
+  emphasisColor: z.string().optional(),
+  fontSize: z.number().default(80),
+  animation: z.enum(["spring-up", "scale-pop", "slide-left", "fade"]).default("spring-up"),
+  holdFrames: z.number().default(45),
+});
+
+const KineticSceneSchema = z.object({
+  type: z.literal("kinetic"),
+  beats: z.array(KineticBeatSchema),
+  durationInFrames: z.number(),
+});
+
+const BeforeAfterSceneSchema = z.object({
+  type: z.literal("beforeAfter"),
+  beforeLabel: z.string().default("BEFORE"),
+  afterLabel: z.string().default("AFTER"),
+  beforeItems: z.array(z.object({
+    text: z.string(),
+    emoji: z.string().optional(),
+  })),
+  afterItems: z.array(z.object({
+    text: z.string(),
+    emoji: z.string().optional(),
+  })),
+  durationInFrames: z.number().default(270),
+});
+
 export const SceneSchema = z.discriminatedUnion("type", [
   TitleSceneSchema,
   BulletSceneSchema,
@@ -63,23 +93,40 @@ export const SceneSchema = z.discriminatedUnion("type", [
   ComparisonSceneSchema,
   CTASceneSchema,
   QuoteSceneSchema,
+  KineticSceneSchema,
+  BeforeAfterSceneSchema,
 ]);
 
 export const ThemeSchema = z.object({
   primaryColor: z.string(),
   secondaryColor: z.string(),
   backgroundColor: z.string(),
+  surfaceColor: z.string(),
   textColor: z.string(),
+  textSecondary: z.string(),
+  textMuted: z.string(),
   accentColor: z.string(),
   errorColor: z.string(),
+  successColor: z.string(),
   fontFamily: z.string(),
   fontFamilyDisplay: z.string(),
+  fontMono: z.string(),
+});
+
+const TransitionStyleSchema = z
+  .enum(["fade", "slide", "wipe", "flip", "clock-wipe", "none"])
+  .default("fade");
+
+const TransitionConfigSchema = z.object({
+  style: TransitionStyleSchema,
+  durationInFrames: z.number().default(15),
 });
 
 export const VideoPropsSchema = z.object({
   scenes: z.array(SceneSchema),
   theme: ThemeSchema,
   audioFile: z.string().optional(),
+  transition: TransitionConfigSchema.optional(),
 });
 
 export type Scene = z.infer<typeof SceneSchema>;
@@ -92,6 +139,11 @@ export type StatRevealScene = z.infer<typeof StatRevealSceneSchema>;
 export type ComparisonScene = z.infer<typeof ComparisonSceneSchema>;
 export type CTAScene = z.infer<typeof CTASceneSchema>;
 export type QuoteScene = z.infer<typeof QuoteSceneSchema>;
+export type KineticBeat = z.infer<typeof KineticBeatSchema>;
+export type KineticScene = z.infer<typeof KineticSceneSchema>;
+export type BeforeAfterScene = z.infer<typeof BeforeAfterSceneSchema>;
+export type TransitionStyle = z.infer<typeof TransitionStyleSchema>;
+export type TransitionConfig = z.infer<typeof TransitionConfigSchema>;
 
 const CalloutSchema = z.object({
   x: z.number(),

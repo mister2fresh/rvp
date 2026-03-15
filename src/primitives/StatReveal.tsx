@@ -16,29 +16,26 @@ export const StatReveal: React.FC<StatRevealProps> = ({
 	statValue,
 	contrastLabel,
 	contrastValue,
-	accentColor = "#00FF88",
-	contrastColor = "#FF6B6B",
-	textColor = "rgba(255,255,255,0.8)",
+	accentColor = "#E8C547",
+	contrastColor = "#3b82f6",
+	textColor = "rgba(255,255,255,0.7)",
 }) => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
 
-	// Phase 1: stat appears (scale + fade)
 	const statDriver = spring({
 		frame,
 		fps,
-		config: { damping: 14, stiffness: 100 },
+		config: { damping: 12, stiffness: 120 },
 	});
 	const statOpacity = interpolate(statDriver, [0, 1], [0, 1]);
 	const statScale = interpolate(statDriver, [0, 1], [0.4, 1]);
 
-	// Label fades in alongside stat
 	const labelOpacity = interpolate(frame, [0, 20], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
 
-	// Phase 2: contrast slams in after pause (high stiffness, low damping)
 	const contrastDelay = 40;
 	const contrastDriver = spring({
 		frame: frame - contrastDelay,
@@ -49,22 +46,26 @@ export const StatReveal: React.FC<StatRevealProps> = ({
 	const contrastScale = interpolate(contrastDriver, [0, 1], [2, 1]);
 	const contrastY = interpolate(contrastDriver, [0, 1], [-40, 0]);
 
+	const glowOpacity = interpolate(statDriver, [0, 0.5, 1], [0, 0.5, 0.3]);
+
 	return (
 		<div
 			style={{
 				display: "flex",
 				flexDirection: "column",
 				alignItems: "center",
-				gap: 30,
+				gap: 28,
 			}}
 		>
 			<div
 				style={{
-					fontSize: 40,
-					fontWeight: 600,
+					fontSize: 26,
+					fontWeight: 400,
+					fontFamily: "Space Mono",
 					color: textColor,
 					opacity: labelOpacity,
-					textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+					textTransform: "uppercase",
+					letterSpacing: "0.15em",
 				}}
 			>
 				{statLabel}
@@ -73,22 +74,26 @@ export const StatReveal: React.FC<StatRevealProps> = ({
 				style={{
 					fontSize: 110,
 					fontWeight: 800,
-					fontFamily: "monospace",
+					fontFamily: "Bricolage Grotesque",
 					color: accentColor,
 					opacity: statOpacity,
 					transform: `scale(${statScale})`,
-					textShadow: "0 4px 30px rgba(0,0,0,0.6)",
+					textShadow: `0 0 60px ${accentColor}${Math.round(glowOpacity * 255).toString(16).padStart(2, "0")}`,
+					lineHeight: 1,
 				}}
 			>
 				{statValue}
 			</div>
 			<div
 				style={{
-					fontSize: 36,
-					fontWeight: 600,
+					fontSize: 26,
+					fontWeight: 400,
+					fontFamily: "Space Mono",
 					color: textColor,
 					opacity: contrastOpacity,
-					textShadow: "0 4px 20px rgba(0,0,0,0.5)",
+					textTransform: "uppercase",
+					letterSpacing: "0.15em",
+					marginTop: 16,
 				}}
 			>
 				{contrastLabel}
@@ -97,11 +102,12 @@ export const StatReveal: React.FC<StatRevealProps> = ({
 				style={{
 					fontSize: 120,
 					fontWeight: 800,
-					fontFamily: "monospace",
+					fontFamily: "Bricolage Grotesque",
 					color: contrastColor,
 					opacity: contrastOpacity,
 					transform: `scale(${contrastScale}) translateY(${contrastY}px)`,
-					textShadow: "0 6px 40px rgba(0,0,0,0.7)",
+					textShadow: `0 0 60px ${contrastColor}40`,
+					lineHeight: 1,
 				}}
 			>
 				{contrastValue}
