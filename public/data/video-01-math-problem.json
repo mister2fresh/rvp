@@ -42,7 +42,7 @@
       "value": 8000,
       "prefix": "",
       "suffix": "",
-      "durationInFrames": 90
+      "durationInFrames": 99
     },
     {
       "type": "kinetic",
@@ -64,7 +64,8 @@
       "value": 50,
       "prefix": "~",
       "suffix": "",
-      "durationInFrames": 75
+      "countDuration": 60,
+      "durationInFrames": 90
     },
     {
       "type": "kinetic",

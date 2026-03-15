@@ -103,6 +103,7 @@ function renderScene(scene: Scene, theme: Theme): React.ReactNode {
 						suffix={scene.suffix}
 						label={scene.label}
 						color={theme.primaryColor}
+						countDuration={scene.countDuration}
 					/>
 				</GlassCard>
 			);

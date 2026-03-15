@@ -7,6 +7,7 @@ type NumberCounterProps = {
 	suffix?: string;
 	label: string;
 	color?: string;
+	countDuration?: number;
 };
 
 export const NumberCounter: React.FC<NumberCounterProps> = ({
@@ -15,6 +16,7 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
 	suffix = "",
 	label,
 	color = "#E8C547",
+	countDuration,
 }) => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
@@ -23,6 +25,7 @@ export const NumberCounter: React.FC<NumberCounterProps> = ({
 		frame,
 		fps,
 		config: { damping: 60, stiffness: 80 },
+		...(countDuration ? { durationInFrames: countDuration } : {}),
 	});
 
 	const num = Math.round(interpolate(progress, [0, 1], [0, target]));

@@ -20,6 +20,7 @@ const StatSceneSchema = z.object({
   value: z.number(),
   prefix: z.string().optional(),
   suffix: z.string().optional(),
+  countDuration: z.number().optional(),
   durationInFrames: z.number(),
 });
 

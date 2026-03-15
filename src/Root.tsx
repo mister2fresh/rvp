@@ -218,6 +218,7 @@ export const RemotionRoot: React.FC = () => {
 				defaultProps={{
 					scenes: mathProblemData.scenes as VideoProps["scenes"],
 					theme: aftersetTheme,
+					audioFile: "v1-math-problem.mp3",
 					transition: { style: "fade", durationInFrames: 15 },
 				}}
 				calculateMetadata={({ props }) => {
