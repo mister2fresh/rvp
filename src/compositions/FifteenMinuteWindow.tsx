@@ -118,7 +118,7 @@ export const FifteenMinuteWindow: React.FC<VideoProps> = ({
 					<AbsoluteFill
 						style={{
 							pointerEvents: "none",
-							opacity: 0.15,
+							opacity: 0.3,
 							maskImage:
 								"linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 38%, rgba(0,0,0,0) 62%, rgba(0,0,0,1) 75%, rgba(0,0,0,1) 100%)",
 							WebkitMaskImage:
@@ -129,8 +129,8 @@ export const FifteenMinuteWindow: React.FC<VideoProps> = ({
 							total={400}
 							highlight={400}
 							cols={20}
-							color={theme.errorColor}
-							highlightColor={theme.errorColor}
+							color={theme.primaryColor}
+							highlightColor={theme.primaryColor}
 							vanishFrom={scenes[2].durationInFrames - 10}
 							vanishDuration={scenes[3].durationInFrames - 20}
 						/>
