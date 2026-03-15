@@ -92,3 +92,25 @@ export type StatRevealScene = z.infer<typeof StatRevealSceneSchema>;
 export type ComparisonScene = z.infer<typeof ComparisonSceneSchema>;
 export type CTAScene = z.infer<typeof CTASceneSchema>;
 export type QuoteScene = z.infer<typeof QuoteSceneSchema>;
+
+const CalloutSchema = z.object({
+  x: z.number(),
+  y: z.number(),
+  width: z.number(),
+  height: z.number(),
+  label: z.string(),
+  borderColor: z.string().optional(),
+  fromFrame: z.number(),
+  durationInFrames: z.number(),
+});
+
+export const ScreenRecordingPropsSchema = z.object({
+  videoSrc: z.string(),
+  callouts: z.array(CalloutSchema),
+  theme: ThemeSchema,
+  audioFile: z.string().optional(),
+  ctaText: z.string().optional(),
+});
+
+export type Callout = z.infer<typeof CalloutSchema>;
+export type ScreenRecordingProps = z.infer<typeof ScreenRecordingPropsSchema>;
