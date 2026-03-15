@@ -1,0 +1,59 @@
+{
+  "scenes": [
+    {
+      "type": "title",
+      "text": "One capture method doesn't work.",
+      "subtitle": "Here's why.",
+      "durationInFrames": 90
+    },
+    {
+      "type": "title",
+      "text": "Dive bar.",
+      "subtitle": "Too dark for QR codes.",
+      "durationInFrames": 210
+    },
+    {
+      "type": "title",
+      "text": "Packed room.",
+      "subtitle": "Nobody walks to the merch table.",
+      "durationInFrames": 210
+    },
+    {
+      "type": "title",
+      "text": "Festival stage.",
+      "subtitle": "Your QR code is 50 feet away.",
+      "durationInFrames": 210
+    },
+    {
+      "type": "title",
+      "text": "Three venues. Three methods. Zero excuses.",
+      "durationInFrames": 240
+    },
+    {
+      "type": "bullets",
+      "heading": "Afterset adapts to every venue.",
+      "items": [
+        { "text": "Text-to-join for dark rooms", "emoji": "💬" },
+        { "text": "QR codes for visible stages", "emoji": "📱" },
+        { "text": "NFC tap for merch tables", "emoji": "📡" }
+      ],
+      "durationInFrames": 270
+    },
+    {
+      "type": "cta",
+      "text": "Every venue. Every method. One platform.",
+      "subtext": "Afterset — link in bio",
+      "durationInFrames": 120
+    }
+  ],
+  "theme": {
+    "primaryColor": "#E8C547",
+    "secondaryColor": "#3b82f6",
+    "backgroundColor": "#0f0f23",
+    "textColor": "#ffffff",
+    "accentColor": "#00FF88",
+    "errorColor": "#ff6b6b",
+    "fontFamily": "Inter",
+    "fontFamilyDisplay": "Montserrat"
+  }
+}

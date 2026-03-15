@@ -1,0 +1,56 @@
+{
+  "videoSrc": "afterset/demo-screen-recording.mp4",
+  "callouts": [
+    {
+      "x": 140,
+      "y": 400,
+      "width": 800,
+      "height": 200,
+      "label": "Fan scans QR code",
+      "borderColor": "#E8C547",
+      "fromFrame": 60,
+      "durationInFrames": 180
+    },
+    {
+      "x": 140,
+      "y": 650,
+      "width": 800,
+      "height": 300,
+      "label": "Fan page loads instantly",
+      "borderColor": "#00FF88",
+      "fromFrame": 270,
+      "durationInFrames": 180
+    },
+    {
+      "x": 140,
+      "y": 800,
+      "width": 800,
+      "height": 150,
+      "label": "Email entered — verified in real time",
+      "borderColor": "#3b82f6",
+      "fromFrame": 480,
+      "durationInFrames": 180
+    },
+    {
+      "x": 100,
+      "y": 300,
+      "width": 880,
+      "height": 500,
+      "label": "Dashboard updates — new fan captured",
+      "borderColor": "#E8C547",
+      "fromFrame": 690,
+      "durationInFrames": 210
+    }
+  ],
+  "ctaText": "Afterset — link in bio",
+  "theme": {
+    "primaryColor": "#E8C547",
+    "secondaryColor": "#3b82f6",
+    "backgroundColor": "#0f0f23",
+    "textColor": "#ffffff",
+    "accentColor": "#00FF88",
+    "errorColor": "#ff6b6b",
+    "fontFamily": "Inter",
+    "fontFamilyDisplay": "Montserrat"
+  }
+}

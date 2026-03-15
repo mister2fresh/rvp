@@ -1,0 +1,61 @@
+{
+  "scenes": [
+    {
+      "type": "title",
+      "text": "POV: your entire fan growth strategy",
+      "subtitle": "is a clipboard at the merch table.",
+      "durationInFrames": 90
+    },
+    {
+      "type": "quote",
+      "quote": "Is this jmith or jsmith?",
+      "attribution": "Every musician, squinting at a signup sheet",
+      "durationInFrames": 180
+    },
+    {
+      "type": "title",
+      "text": "Half the emails bounce.",
+      "subtitle": "The other half you can't even read.",
+      "durationInFrames": 120
+    },
+    {
+      "type": "comparison",
+      "leftTitle": "Clipboard",
+      "rightTitle": "Afterset",
+      "leftItems": [
+        "Illegible handwriting",
+        "50% bounce rate",
+        "Zero analytics",
+        "Loses sheets constantly"
+      ],
+      "rightItems": [
+        "Digital capture",
+        "Verified emails",
+        "Real-time dashboard",
+        "Never loses a fan"
+      ],
+      "durationInFrames": 360
+    },
+    {
+      "type": "title",
+      "text": "Three venues. Three methods. Zero excuses.",
+      "durationInFrames": 180
+    },
+    {
+      "type": "cta",
+      "text": "Ditch the clipboard.",
+      "subtext": "Afterset — link in bio",
+      "durationInFrames": 120
+    }
+  ],
+  "theme": {
+    "primaryColor": "#E8C547",
+    "secondaryColor": "#3b82f6",
+    "backgroundColor": "#0f0f23",
+    "textColor": "#ffffff",
+    "accentColor": "#00FF88",
+    "errorColor": "#ff6b6b",
+    "fontFamily": "Inter",
+    "fontFamilyDisplay": "Montserrat"
+  }
+}

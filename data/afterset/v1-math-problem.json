@@ -1,0 +1,63 @@
+{
+  "scenes": [
+    {
+      "type": "title",
+      "text": "Here's a math problem nobody in the music industry is talking about.",
+      "durationInFrames": 90
+    },
+    {
+      "type": "stat",
+      "label": "shows per year",
+      "value": 100,
+      "suffix": " shows",
+      "durationInFrames": 150
+    },
+    {
+      "type": "stat",
+      "label": "average audience per show",
+      "value": 80,
+      "suffix": " people",
+      "durationInFrames": 150
+    },
+    {
+      "type": "stat-reveal",
+      "statLabel": "Total fans reached",
+      "statValue": "8,000",
+      "contrastLabel": "Fan emails captured",
+      "contrastValue": "50",
+      "durationInFrames": 340
+    },
+    {
+      "type": "title",
+      "text": "99% evaporation rate.",
+      "subtitle": "Your audience disappears after every show.",
+      "durationInFrames": 150
+    },
+    {
+      "type": "bullets",
+      "heading": "The fix is dead simple.",
+      "items": [
+        { "text": "QR code on stage — fans scan in seconds", "emoji": "📱" },
+        { "text": "Text-to-join — works when it's too dark for QR", "emoji": "💬" },
+        { "text": "NFC tap — one touch at the merch table", "emoji": "📡" }
+      ],
+      "durationInFrames": 360
+    },
+    {
+      "type": "cta",
+      "text": "Afterset — capture every fan.",
+      "subtext": "Link in bio",
+      "durationInFrames": 110
+    }
+  ],
+  "theme": {
+    "primaryColor": "#E8C547",
+    "secondaryColor": "#3b82f6",
+    "backgroundColor": "#0f0f23",
+    "textColor": "#ffffff",
+    "accentColor": "#00FF88",
+    "errorColor": "#ff6b6b",
+    "fontFamily": "Inter",
+    "fontFamilyDisplay": "Montserrat"
+  }
+}

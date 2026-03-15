@@ -1,0 +1,67 @@
+{
+  "scenes": [
+    {
+      "type": "title",
+      "text": "I talked to 30 musicians in 2 weeks.",
+      "subtitle": "Same problem. No solution.",
+      "durationInFrames": 90
+    },
+    {
+      "type": "quote",
+      "quote": "How do you follow up with fans after a show?",
+      "durationInFrames": 120
+    },
+    {
+      "type": "quote",
+      "quote": "I don't.",
+      "attribution": "Guitarist, 6 years touring",
+      "durationInFrames": 150
+    },
+    {
+      "type": "quote",
+      "quote": "I post and hope.",
+      "attribution": "Singer-songwriter, 200+ shows",
+      "durationInFrames": 150
+    },
+    {
+      "type": "stat-reveal",
+      "statLabel": "Shows played",
+      "statValue": "150",
+      "contrastLabel": "Monthly listeners",
+      "contrastValue": "47",
+      "durationInFrames": 300
+    },
+    {
+      "type": "bullets",
+      "heading": "So we built the solution.",
+      "items": [
+        { "text": "QR, text, or NFC — fans choose how to connect", "emoji": "📱" },
+        { "text": "Verified emails land in your dashboard instantly", "emoji": "✅" },
+        { "text": "One-click export to your email platform", "emoji": "📧" },
+        { "text": "See which shows drive the most signups", "emoji": "📊" }
+      ],
+      "durationInFrames": 390
+    },
+    {
+      "type": "title",
+      "text": "Every fan. Every show. Captured.",
+      "durationInFrames": 180
+    },
+    {
+      "type": "cta",
+      "text": "Afterset — stop losing your audience.",
+      "subtext": "Link in bio",
+      "durationInFrames": 120
+    }
+  ],
+  "theme": {
+    "primaryColor": "#E8C547",
+    "secondaryColor": "#3b82f6",
+    "backgroundColor": "#0f0f23",
+    "textColor": "#ffffff",
+    "accentColor": "#00FF88",
+    "errorColor": "#ff6b6b",
+    "fontFamily": "Inter",
+    "fontFamilyDisplay": "Montserrat"
+  }
+}

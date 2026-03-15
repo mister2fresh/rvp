@@ -37,6 +37,8 @@ export const TextFlyIn: React.FC<TextFlyInProps> = ({
 				color,
 				textAlign: "center",
 				padding: "0 60px",
+				width: "100%",
+				boxSizing: "border-box",
 				textShadow: "0 4px 20px rgba(0,0,0,0.5)",
 			}}
 		>

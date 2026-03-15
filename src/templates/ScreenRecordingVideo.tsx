@@ -9,6 +9,7 @@ import {
 } from "remotion";
 import type { ScreenRecordingProps } from "../types";
 import { AnimatedCallout } from "../primitives/AnimatedCallout";
+import { LinkInBio } from "../primitives/LinkInBio";
 
 export const ScreenRecordingVideo: React.FC<ScreenRecordingProps> = ({
 	videoSrc,
@@ -58,6 +59,8 @@ export const ScreenRecordingVideo: React.FC<ScreenRecordingProps> = ({
 					{ctaText}
 				</div>
 			)}
+
+			<LinkInBio />
 
 			{audioFile && (
 				<Html5Audio

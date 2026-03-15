@@ -39,6 +39,7 @@ function renderScene(scene: Scene, theme: Theme): React.ReactNode {
 						flexDirection: "column",
 						alignItems: "center",
 						gap: 30,
+						width: "100%",
 					}}
 				>
 					<TextFlyIn
@@ -123,6 +124,7 @@ function renderScene(scene: Scene, theme: Theme): React.ReactNode {
 						flexDirection: "column",
 						alignItems: "center",
 						gap: 30,
+						width: "100%",
 					}}
 				>
 					<TextFlyIn
@@ -149,7 +151,7 @@ function renderScene(scene: Scene, theme: Theme): React.ReactNode {
 						flexDirection: "column",
 						alignItems: "center",
 						gap: 40,
-						padding: "0 60px",
+						width: "100%",
 					}}
 				>
 					<TextFlyIn

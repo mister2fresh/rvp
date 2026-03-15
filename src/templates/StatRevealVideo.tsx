@@ -2,6 +2,7 @@ import React from "react";
 import { AbsoluteFill, Html5Audio, Sequence, interpolate, staticFile } from "remotion";
 import type { VideoProps } from "../types";
 import { SceneRenderer } from "../scenes/SceneRenderer";
+import { LinkInBio } from "../primitives/LinkInBio";
 
 export const StatRevealVideo: React.FC<VideoProps> = ({
 	scenes,
@@ -25,6 +26,8 @@ export const StatRevealVideo: React.FC<VideoProps> = ({
 					</Sequence>
 				);
 			})}
+
+			<LinkInBio />
 
 			{audioFile && (
 				<Html5Audio
