@@ -120,7 +120,7 @@ src/primitives/      — reusable animation components (TextFlyIn, KineticBeat, 
 src/primitives/      — SVG graphics (QrCodeGraphic, TextToJoinGraphic, NfcChipGraphic, CrowdGrid, DecayBar, CountdownRing, ProgressBar, FunnelDrain, DotGridBleed)
 src/scenes/          — SceneRenderer routes scene type → primitive
 src/templates/       — video-level components (KineticTextVideo, StatRevealVideo, ScreenRecordingVideo)
-src/compositions/    — per-video components with custom overlays and effects (TheMathProblem, FifteenMinuteWindow, FanEvaporationNumbers, etc.)
+src/compositions/    — per-video components with custom overlays and effects (TheMathProblem, FifteenMinuteWindow, FanEvaporationNumbers, ThreeVenues, etc.)
 src/themes/          — theme objects conforming to ThemeSchema
 public/data/         — JSON scene data for compositions
 ```
@@ -136,6 +136,7 @@ Compositions wrap templates with per-video creative (effects, SVG overlays, per-
 - Scene data lives in `public/data/` JSON files, imported into Root.tsx
 - Overlays must avoid the center text zone — use CSS mask gradients or flex-end/flex-start positioning
 - CrowdGrid overlays use `maskImage` with transparent center band (38%–62%) to frame text without overlap
+- Standalone compositions (e.g., ThreeVenues) can skip templates/SceneRenderer entirely — single-file with local shared components (`VenueCard`, `StatCard`), inline SVG, and `<Sequence>` hard cuts
 
 ## Creative Principles (cross-video consistency)
 - **Shared visual grammar:** screen shake, CrowdGrid, spring physics, gold/red emotional arc — reuse across videos for brand recognition

@@ -9,6 +9,7 @@ import { ScreenRecordingVideo } from "./templates/ScreenRecordingVideo";
 import { TheMathProblem } from "./compositions/TheMathProblem";
 import { FifteenMinuteWindow } from "./compositions/FifteenMinuteWindow";
 import { FanEvaporationNumbers } from "./compositions/FanEvaporationNumbers";
+import { ThreeVenues } from "./compositions/ThreeVenues";
 import mathProblemData from "../public/data/video-01-math-problem.json";
 import fifteenMinuteData from "../public/data/video-02-fifteen-minutes.json";
 import fanEvaporationData from "../public/data/video-03-fan-evaporation.json";
@@ -283,6 +284,14 @@ export const RemotionRoot: React.FC = () => {
 						durationInFrames: Math.max(total, MIN_DURATION),
 					};
 				}}
+			/>
+			<Composition
+				id="ThreeVenues"
+				component={ThreeVenues}
+				width={WIDTH}
+				height={HEIGHT}
+				fps={FPS}
+				durationInFrames={1050}
 			/>
 		</>
 	);
