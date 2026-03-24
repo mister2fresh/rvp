@@ -123,10 +123,10 @@ const StatCard: React.FC<StatCardProps> = ({
 			config: SPRING_CONFIG,
 		}),
 		[0, 1],
-		[200, 0],
+		[600, 0],
 	);
 
-	const opacity = interpolate(local, [0, 10], [0, 1], {
+	const opacity = interpolate(local, [0, 8], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
@@ -145,11 +145,11 @@ const StatCard: React.FC<StatCardProps> = ({
 				opacity,
 			}}
 		>
-			<div style={{ fontSize: 32, color: "white", fontWeight: 500 }}>
+			<div style={{ fontSize: 38, color: "white", fontWeight: 600 }}>
 				{icon} {mainText}
 			</div>
 			<div
-				style={{ fontSize: 24, color: TEXT_SECONDARY, marginTop: 12, fontWeight: 500 }}
+				style={{ fontSize: 28, color: TEXT_SECONDARY, marginTop: 12, fontWeight: 500 }}
 			>
 				{subText}
 			</div>
@@ -160,31 +160,72 @@ const StatCard: React.FC<StatCardProps> = ({
 // ─── SVG Illustrations ───────────────────────────────────────────────
 
 const MockQrCode: React.FC = () => {
-	const SIZE = 200;
-	const CELL = 20;
-	const GRID = SIZE / CELL;
-	// Deterministic "random" fill
-	const filled = (r: number, c: number) => {
-		const v = ((r * 7 + c * 13 + 37) * 17) % 100;
-		return v < 55;
+	const S = 200;
+	const C = 8; // cell size
+	const G = 25; // 25x25 grid (QR version 2)
+
+	// Finder pattern: 7x7 with outer border, inner border, center dot
+	const finder = (ox: number, oy: number): React.ReactNode[] => {
+		const rects: React.ReactNode[] = [];
+		const k = `f${ox}-${oy}`;
+		// Outer ring
+		rects.push(<rect key={`${k}-o`} x={ox * C} y={oy * C} width={7 * C} height={7 * C} fill="white" />);
+		rects.push(<rect key={`${k}-i1`} x={(ox + 1) * C} y={(oy + 1) * C} width={5 * C} height={5 * C} fill="#0a0e1a" />);
+		rects.push(<rect key={`${k}-i2`} x={(ox + 2) * C} y={(oy + 2) * C} width={3 * C} height={3 * C} fill="white" />);
+		return rects;
 	};
 
+	// Timing patterns (alternating dots between finders)
+	const timing: React.ReactNode[] = [];
+	for (let i = 8; i < 17; i++) {
+		if (i % 2 === 0) {
+			timing.push(<rect key={`th-${i}`} x={i * C} y={6 * C} width={C} height={C} fill="white" />);
+			timing.push(<rect key={`tv-${i}`} x={6 * C} y={i * C} width={C} height={C} fill="white" />);
+		}
+	}
+
+	// Alignment pattern (5x5 at position 18,18 for version 2)
+	const align: React.ReactNode[] = [
+		<rect key="al-o" x={16 * C} y={16 * C} width={5 * C} height={5 * C} fill="white" />,
+		<rect key="al-i" x={17 * C} y={17 * C} width={3 * C} height={3 * C} fill="#0a0e1a" />,
+		<rect key="al-c" x={18 * C} y={18 * C} width={C} height={C} fill="white" />,
+	];
+
+	// Deterministic data modules (skip finder/timing/alignment zones)
+	const isReserved = (r: number, c: number): boolean => {
+		// Finders + separators
+		if (r < 9 && c < 9) return true;
+		if (r < 9 && c > 16) return true;
+		if (r > 16 && c < 9) return true;
+		// Timing
+		if (r === 6 || c === 6) return true;
+		// Alignment
+		if (r >= 16 && r <= 20 && c >= 16 && c <= 20) return true;
+		return false;
+	};
+
+	const data: React.ReactNode[] = [];
+	for (let r = 0; r < G; r++) {
+		for (let c = 0; c < G; c++) {
+			if (isReserved(r, c)) continue;
+			const v = ((r * 31 + c * 17 + r * c * 7 + 53) * 13) % 100;
+			if (v < 48) {
+				data.push(
+					<rect key={`d-${r}-${c}`} x={c * C} y={r * C} width={C} height={C} fill="white" />,
+				);
+			}
+		}
+	}
+
 	return (
-		<svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
-			{Array.from({ length: GRID }, (_, r) =>
-				Array.from({ length: GRID }, (_, c) =>
-					filled(r, c) ? (
-						<rect
-							key={`${r}-${c}`}
-							x={c * CELL}
-							y={r * CELL}
-							width={CELL}
-							height={CELL}
-							fill="white"
-						/>
-					) : null,
-				),
-			)}
+		<svg width={S} height={S} viewBox={`0 0 ${G * C} ${G * C}`}>
+			<rect width={G * C} height={G * C} fill="#0a0e1a" />
+			{finder(0, 0)}
+			{finder(18, 0)}
+			{finder(0, 18)}
+			{timing}
+			{align}
+			{data}
 		</svg>
 	);
 };
@@ -687,7 +728,133 @@ const Checkmark: React.FC = () => (
 	</svg>
 );
 
+// ─── Equalizer SVG ──────────────────────────────────────────────────
+
+const EQ_BARS = 24;
+const EQ_WIDTH = 720;
+const EQ_HEIGHT = 400;
+const BAR_GAP = EQ_WIDTH / EQ_BARS;
+const BAR_W = BAR_GAP * 0.55;
+
+const barHeight = (i: number, t: number): number => {
+	// Each bar has its own frequency/phase for organic movement
+	const freq1 = 0.08 + (i % 5) * 0.015;
+	const freq2 = 0.05 + (i % 3) * 0.02;
+	const phase = i * 0.7;
+	const wave =
+		Math.sin(t * freq1 + phase) * 0.4 +
+		Math.sin(t * freq2 + phase * 1.3) * 0.3 +
+		0.3;
+	// Center bars taller on average
+	const center = 1 - Math.abs(i - EQ_BARS / 2) / (EQ_BARS / 2);
+	return (0.15 + wave * 0.85) * (0.4 + center * 0.6) * EQ_HEIGHT;
+};
+
+const EqualizerSvg: React.FC<{ frame: number; fadeIn: number }> = ({
+	frame,
+	fadeIn,
+}) => {
+	return (
+		<svg
+			width={EQ_WIDTH}
+			height={EQ_HEIGHT}
+			viewBox={`0 0 ${EQ_WIDTH} ${EQ_HEIGHT}`}
+			style={{ opacity: fadeIn }}
+		>
+			{Array.from({ length: EQ_BARS }, (_, i) => {
+				const h = barHeight(i, frame) * fadeIn;
+				const x = i * BAR_GAP + (BAR_GAP - BAR_W) / 2;
+				const y = EQ_HEIGHT - h;
+				// Gold in center, fading to muted at edges
+				const center = 1 - Math.abs(i - EQ_BARS / 2) / (EQ_BARS / 2);
+				const alpha = 0.3 + center * 0.7;
+				return (
+					<rect
+						key={i}
+						x={x}
+						y={y}
+						width={BAR_W}
+						height={h}
+						rx={BAR_W / 2}
+						fill={GOLD}
+						opacity={alpha}
+					/>
+				);
+			})}
+		</svg>
+	);
+};
+
 // ─── Scene Components ────────────────────────────────────────────────
+
+const MusiciansOpener: React.FC = () => {
+	const frame = useCurrentFrame();
+	const { fps } = useVideoConfig();
+
+	const titleScale = interpolate(
+		spring({ frame, fps, config: { stiffness: 120, damping: 14 } }),
+		[0, 1],
+		[0.6, 1],
+	);
+	const titleOpacity = interpolate(frame, [0, 12], [0, 1], {
+		extrapolateRight: "clamp",
+		extrapolateLeft: "clamp",
+	});
+
+	const eqFadeIn = interpolate(frame, [8, 28], [0, 1], {
+		extrapolateRight: "clamp",
+		extrapolateLeft: "clamp",
+	});
+
+	const subOpacity = interpolate(frame, [25, 40], [0, 1], {
+		extrapolateRight: "clamp",
+		extrapolateLeft: "clamp",
+	});
+	const subY = interpolate(
+		spring({ frame: Math.max(0, frame - 25), fps, config: SPRING_CONFIG }),
+		[0, 1],
+		[30, 0],
+	);
+
+	return (
+		<AbsoluteFill
+			style={{
+				backgroundColor: BG,
+				fontFamily,
+				justifyContent: "center",
+				alignItems: "center",
+			}}
+		>
+			<div
+				style={{
+					transform: `scale(${titleScale})`,
+					opacity: titleOpacity,
+					fontSize: 80,
+					fontWeight: 700,
+					color: "white",
+					fontFamily: displayFont,
+				}}
+			>
+				MUSICIANS
+			</div>
+			<div style={{ marginTop: 40 }}>
+				<EqualizerSvg frame={frame} fadeIn={eqFadeIn} />
+			</div>
+			<div
+				style={{
+					marginTop: 36,
+					fontSize: 34,
+					fontWeight: 500,
+					color: TEXT_SECONDARY,
+					opacity: subOpacity,
+					transform: `translateY(${subY}px)`,
+				}}
+			>
+				Stop losing fans at the door.
+			</div>
+		</AbsoluteFill>
+	);
+};
 
 const HookCard: React.FC = () => {
 	const frame = useCurrentFrame();
@@ -699,7 +866,7 @@ const HookCard: React.FC = () => {
 		[0.85, 1],
 	);
 
-	const subOpacity = interpolate(frame, [60, 75], [0, 1], {
+	const subOpacity = interpolate(frame, [35, 50], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
@@ -740,12 +907,12 @@ const DiveBarScene: React.FC = () => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
 
-	const qrOpacity = interpolate(frame, [90, 100], [0, 1], {
+	const qrOpacity = interpolate(frame, [25, 35], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
 
-	const xProgress = interpolate(frame, [100, 160], [0, 1], {
+	const xProgress = interpolate(frame, [35, 75], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
@@ -777,7 +944,7 @@ const DiveBarScene: React.FC = () => {
 				icon="📵"
 				mainText="Camera can't focus in the dark"
 				subText="QR fail rate in dark venues: ~60%"
-				startFrame={150}
+				startFrame={65}
 			/>
 		</VenueCard>
 	);
@@ -787,12 +954,12 @@ const BigRoomScene: React.FC = () => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
 
-	const diagramOpacity = interpolate(frame, [90, 100], [0, 1], {
+	const diagramOpacity = interpolate(frame, [30, 40], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
 
-	const diagramProgress = interpolate(frame, [90, 150], [0, 1], {
+	const diagramProgress = interpolate(frame, [30, 90], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
@@ -823,7 +990,7 @@ const BigRoomScene: React.FC = () => {
 				icon="🚶"
 				mainText="Only ~10% of fans walk to the merch table"
 				subText="The other 90% walk out the door."
-				startFrame={150}
+				startFrame={85}
 			/>
 		</VenueCard>
 	);
@@ -832,12 +999,12 @@ const BigRoomScene: React.FC = () => {
 const FestivalScene: React.FC = () => {
 	const frame = useCurrentFrame();
 
-	const distOpacity = interpolate(frame, [90, 100], [0, 1], {
+	const distOpacity = interpolate(frame, [30, 40], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
 
-	const distProgress = interpolate(frame, [90, 145], [0, 1], {
+	const distProgress = interpolate(frame, [30, 85], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
@@ -863,7 +1030,7 @@ const FestivalScene: React.FC = () => {
 				icon="😬"
 				mainText="QR codes need to be <3 feet to scan reliably"
 				subText="Festival stages make this nearly impossible."
-				startFrame={135}
+				startFrame={75}
 			/>
 		</VenueCard>
 	);
@@ -964,10 +1131,10 @@ const SolutionCard: React.FC = () => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
 
-	// Divider at frame 150 (relative to solution card start)
+	// Divider at frame 100 (relative to solution card start)
 	const dividerWidth = interpolate(
 		spring({
-			frame: Math.max(0, frame - 150),
+			frame: Math.max(0, frame - 100),
 			fps,
 			config: SPRING_CONFIG,
 		}),
@@ -975,13 +1142,13 @@ const SolutionCard: React.FC = () => {
 		[0, 960],
 	);
 
-	const taglineOpacity = interpolate(frame, [155, 170], [0, 1], {
+	const taglineOpacity = interpolate(frame, [105, 120], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
 	const taglineScale = interpolate(
 		spring({
-			frame: Math.max(0, frame - 155),
+			frame: Math.max(0, frame - 105),
 			fps,
 			config: { stiffness: 120, damping: 14 },
 		}),
@@ -1007,13 +1174,13 @@ const SolutionCard: React.FC = () => {
 				icon={<SmsIcon />}
 				title="Text a keyword"
 				subtitle="Works in dark rooms. Fans text from their seat."
-				startFrame={40}
+				startFrame={30}
 			/>
 			<SolutionRow
 				icon={<NfcIcon />}
 				title="NFC tap"
 				subtitle="Poster by the bathroom. One tap. Done."
-				startFrame={80}
+				startFrame={60}
 			/>
 
 			{/* Divider */}
@@ -1062,21 +1229,21 @@ const CtaCard: React.FC = () => {
 	const lines = [
 		{ delay: 0, content: "● afterset", size: 96, color: "white", weight: 700 },
 		{
-			delay: 15,
+			delay: 10,
 			content: "Turn tonight's audience",
 			size: 36,
 			color: TEXT_SECONDARY,
 			weight: 500,
 		},
 		{
-			delay: 30,
+			delay: 20,
 			content: "into tomorrow's fans.",
 			size: 36,
 			color: TEXT_SECONDARY,
 			weight: 500,
 		},
 		{
-			delay: 45,
+			delay: 30,
 			content: "🔗 Link in bio — waitlist open",
 			size: 32,
 			color: GOLD,
@@ -1139,25 +1306,28 @@ const CtaCard: React.FC = () => {
 export const ThreeVenues: React.FC = () => {
 	return (
 		<AbsoluteFill>
-			<Sequence from={0} durationInFrames={90}>
+			<Sequence from={0} durationInFrames={60}>
+				<MusiciansOpener />
+			</Sequence>
+			<Sequence from={60} durationInFrames={60}>
 				<HookCard />
 			</Sequence>
-			<Sequence from={90} durationInFrames={210}>
+			<Sequence from={120} durationInFrames={105}>
 				<DiveBarScene />
 			</Sequence>
-			<Sequence from={300} durationInFrames={210}>
+			<Sequence from={225} durationInFrames={135}>
 				<BigRoomScene />
 			</Sequence>
-			<Sequence from={510} durationInFrames={180}>
+			<Sequence from={360} durationInFrames={120}>
 				<FestivalScene />
 			</Sequence>
-			<Sequence from={690} durationInFrames={60}>
+			<Sequence from={480} durationInFrames={45}>
 				<TransitionCard />
 			</Sequence>
-			<Sequence from={750} durationInFrames={180}>
+			<Sequence from={525} durationInFrames={135}>
 				<SolutionCard />
 			</Sequence>
-			<Sequence from={930} durationInFrames={120}>
+			<Sequence from={660} durationInFrames={90}>
 				<CtaCard />
 			</Sequence>
 		</AbsoluteFill>
