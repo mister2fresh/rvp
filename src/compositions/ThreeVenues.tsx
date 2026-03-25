@@ -545,7 +545,7 @@ const VenueDiagram: React.FC<{ progress: number }> = ({ progress }) => {
 };
 
 const DistanceVisual: React.FC<{ progress: number }> = ({ progress }) => {
-	const ARROW_LEN = 500;
+	const ARROW_LEN = 400;
 	const arrowDraw = interpolate(progress, [0, 0.7], [ARROW_LEN, 0], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
@@ -560,88 +560,43 @@ const DistanceVisual: React.FC<{ progress: number }> = ({ progress }) => {
 	});
 
 	return (
-		<svg width={700} height={200} viewBox="0 0 700 200">
-			{/* Stage icon */}
-			<rect
-				x={20}
-				y={60}
-				width={80}
-				height={50}
-				rx={6}
-				fill="#333"
-				stroke="#666"
-				strokeWidth={2}
-			/>
-			<text
-				x={60}
-				y={92}
-				textAnchor="middle"
-				fill="white"
-				fontSize={16}
-				fontWeight={700}
-				fontFamily={fontFamily}
-			>
+		<svg width={300} height={560} viewBox="0 0 300 560">
+			{/* Stage icon at top */}
+			<rect x={110} y={20} width={80} height={50} rx={6} fill="#333" stroke="#666" strokeWidth={2} />
+			<text x={150} y={52} textAnchor="middle" fill="white" fontSize={16} fontWeight={700} fontFamily={fontFamily}>
 				STAGE
 			</text>
 
-			{/* Arrow line */}
+			{/* Vertical arrow line */}
 			<line
-				x1={120}
-				y1={85}
-				x2={580}
-				y2={85}
-				stroke="#666"
-				strokeWidth={3}
-				strokeDasharray={ARROW_LEN}
-				strokeDashoffset={arrowDraw}
+				x1={150} y1={90} x2={150} y2={480}
+				stroke="#666" strokeWidth={3}
+				strokeDasharray={ARROW_LEN} strokeDashoffset={arrowDraw}
 			/>
-			{/* Arrowhead */}
-			<polygon
-				points="575,75 595,85 575,95"
-				fill="#666"
-				opacity={labelOpacity}
-			/>
+			{/* Arrowhead pointing down */}
+			<polygon points="140,475 150,495 160,475" fill="#666" opacity={labelOpacity} />
 
-			{/* Label */}
+			{/* Distance label */}
 			<text
-				x={350}
-				y={65}
-				textAnchor="middle"
-				fill="white"
-				fontSize={32}
-				fontWeight={700}
-				opacity={labelOpacity}
-				fontFamily={fontFamily}
+				x={195} y={290} textAnchor="start"
+				fill="white" fontSize={32} fontWeight={700}
+				opacity={labelOpacity} fontFamily={fontFamily}
 			>
-				50 ft
+				200 ft
 			</text>
 
-			{/* QR icon */}
-			<rect
-				x={600}
-				y={60}
-				width={50}
-				height={50}
-				rx={4}
-				fill="#222"
-				stroke="#666"
-				strokeWidth={2}
-			/>
-			<rect x={610} y={70} width={12} height={12} fill="white" />
-			<rect x={628} y={70} width={12} height={12} fill="white" />
-			<rect x={610} y={88} width={12} height={12} fill="white" />
-			<rect x={628} y={88} width={12} height={12} fill="white" />
+			{/* QR icon at bottom */}
+			<rect x={125} y={505} width={50} height={50} rx={4} fill="#222" stroke="#666" strokeWidth={2} />
+			<rect x={135} y={515} width={12} height={12} fill="white" />
+			<rect x={153} y={515} width={12} height={12} fill="white" />
+			<rect x={135} y={533} width={12} height={12} fill="white" />
+			<rect x={153} y={533} width={12} height={12} fill="white" />
 
 			{/* Red X */}
 			<text
-				x={625}
-				y={155}
-				textAnchor="middle"
-				fill={RED}
-				fontSize={48}
-				fontWeight={700}
-				opacity={xOpacity}
-				fontFamily={fontFamily}
+				x={210} y={545} textAnchor="middle"
+				fill={RED} fontSize={48} fontWeight={700}
+				opacity={xOpacity} fontFamily={fontFamily}
 			>
 				✗
 			</text>
@@ -717,38 +672,24 @@ const Checkmark: React.FC = () => (
 
 // ─── Scene Components ────────────────────────────────────────────────
 
+const VENUE_PREVIEWS = [
+	{ emoji: "🍺", name: "Dive Bar" },
+	{ emoji: "🎸", name: "Packed Room" },
+	{ emoji: "🌤️", name: "Festival Stage" },
+] as const;
+
 const VenueFramingOpener: React.FC = () => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
 
-	const numScale = interpolate(
-		spring({ frame, fps, config: { stiffness: 120, damping: 14 } }),
-		[0, 1],
-		[0.4, 1],
-	);
-	const numOpacity = interpolate(frame, [0, 10], [0, 1], {
-		extrapolateRight: "clamp",
-		extrapolateLeft: "clamp",
-	});
-
-	const titleOpacity = interpolate(frame, [8, 22], [0, 1], {
+	const titleOpacity = interpolate(frame, [0, 15], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
 	const titleY = interpolate(
-		spring({ frame: Math.max(0, frame - 8), fps, config: SPRING_CONFIG }),
+		spring({ frame, fps, config: SPRING_CONFIG }),
 		[0, 1],
 		[40, 0],
-	);
-
-	const subOpacity = interpolate(frame, [30, 45], [0, 1], {
-		extrapolateRight: "clamp",
-		extrapolateLeft: "clamp",
-	});
-	const subY = interpolate(
-		spring({ frame: Math.max(0, frame - 30), fps, config: SPRING_CONFIG }),
-		[0, 1],
-		[30, 0],
 	);
 
 	return (
@@ -762,43 +703,66 @@ const VenueFramingOpener: React.FC = () => {
 		>
 			<div
 				style={{
-					transform: `scale(${numScale})`,
-					opacity: numOpacity,
-					fontSize: 160,
-					fontWeight: 700,
-					color: GOLD,
-					fontFamily: displayFont,
-					lineHeight: 1,
-				}}
-			>
-				3
-			</div>
-			<div
-				style={{
-					marginTop: 16,
-					fontSize: 64,
-					fontWeight: 700,
-					color: "white",
-					fontFamily: displayFont,
 					opacity: titleOpacity,
 					transform: `translateY(${titleY}px)`,
 					textAlign: "center",
 				}}
 			>
-				types of venues.
+				<div
+					style={{
+						fontSize: 58,
+						fontWeight: 700,
+						color: "white",
+						fontFamily: displayFont,
+					}}
+				>
+					There are <span style={{ color: GOLD, fontSize: 72 }}>3</span> types
+				</div>
+				<div
+					style={{
+						fontSize: 58,
+						fontWeight: 700,
+						color: "white",
+						fontFamily: displayFont,
+					}}
+				>
+					of venues.
+				</div>
 			</div>
-			<div
-				style={{
-					marginTop: 28,
-					fontSize: 34,
-					fontWeight: 500,
-					color: TEXT_SECONDARY,
-					opacity: subOpacity,
-					transform: `translateY(${subY}px)`,
-					textAlign: "center",
-				}}
-			>
-				Each one breaks a different capture method.
+
+			{/* Staggered venue preview chips */}
+			<div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 16 }}>
+				{VENUE_PREVIEWS.map((v, i) => {
+					const chipFrame = Math.max(0, frame - 30 - i * 10);
+					const chipScale = interpolate(
+						spring({ frame: chipFrame, fps, config: { stiffness: 200, damping: 14 } }),
+						[0, 1],
+						[0.6, 1],
+					);
+					const chipOpacity = interpolate(chipFrame, [0, 8], [0, 1], {
+						extrapolateRight: "clamp",
+						extrapolateLeft: "clamp",
+					});
+					return (
+						<div
+							key={v.name}
+							style={{
+								opacity: chipOpacity,
+								transform: `scale(${chipScale})`,
+								background: "rgba(255,255,255,0.06)",
+								borderRadius: 16,
+								padding: "14px 36px",
+								fontSize: 36,
+								fontWeight: 600,
+								color: TEXT_SECONDARY,
+								textAlign: "center",
+								border: "1px solid rgba(255,255,255,0.08)",
+							}}
+						>
+							{v.emoji}{"  "}{v.name}
+						</div>
+					);
+				})}
 			</div>
 		</AbsoluteFill>
 	);
@@ -911,7 +875,7 @@ const FestivalScene: React.FC = () => {
 		<VenueCard
 			bgColor="#0b1118"
 			label="VENUE 3 / 3  ·  🌤️ Festival Stage"
-			headline={["Your QR code is", "50 feet away."]}
+			headline={["Your QR code is", "200 feet away."]}
 		>
 			<div
 				style={{
@@ -1216,38 +1180,38 @@ const CtaCard: React.FC = () => {
 export const ThreeVenues: React.FC = () => {
 	return (
 		<AbsoluteFill>
-			{/* Opener: "3 types of venues" (2.5s) */}
-			<Sequence from={0} durationInFrames={75}>
+			{/* Opener: "There are 3 types of venues" (3.5s) */}
+			<Sequence from={0} durationInFrames={105}>
 				<VenueFramingOpener />
 			</Sequence>
 
 			{/* Venue 1: Dive Bar (4s) */}
-			<Sequence from={75} durationInFrames={120}>
+			<Sequence from={105} durationInFrames={120}>
 				<DiveBarScene />
 			</Sequence>
 
 			{/* Venue 2: Packed Room (4.5s) */}
-			<Sequence from={195} durationInFrames={135}>
+			<Sequence from={225} durationInFrames={135}>
 				<BigRoomScene />
 			</Sequence>
 
 			{/* Venue 3: Festival Stage (4s) */}
-			<Sequence from={330} durationInFrames={120}>
+			<Sequence from={360} durationInFrames={120}>
 				<FestivalScene />
 			</Sequence>
 
 			{/* Payoff: "Three venues. Three methods. Zero excuses." (2s) */}
-			<Sequence from={450} durationInFrames={60}>
+			<Sequence from={480} durationInFrames={60}>
 				<TransitionCard />
 			</Sequence>
 
 			{/* Solution: QR + SMS + NFC (4.5s) */}
-			<Sequence from={510} durationInFrames={135}>
+			<Sequence from={540} durationInFrames={135}>
 				<SolutionCard />
 			</Sequence>
 
 			{/* CTA (3.5s) */}
-			<Sequence from={645} durationInFrames={105}>
+			<Sequence from={675} durationInFrames={105}>
 				<CtaCard />
 			</Sequence>
 
