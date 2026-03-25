@@ -9,6 +9,7 @@ import {
 } from "remotion";
 import { loadFont as loadDMSans } from "@remotion/google-fonts/DMSans";
 import { loadFont as loadBricolage } from "@remotion/google-fonts/BricolageGrotesque";
+import { LinkInBio } from "../primitives/LinkInBio";
 
 const { fontFamily } = loadDMSans();
 const { fontFamily: displayFont } = loadBricolage();
@@ -422,25 +423,11 @@ const VenueDiagram: React.FC<{ progress: number }> = ({ progress }) => {
 				BAR
 			</text>
 
-			{/* Mid-venue scattered fans (milling, not paying attention) */}
+			{/* Mid-venue scattered fans — fade in as animation progresses */}
 			{MID_FANS.map((fan, i) => (
-				<Fan
-					key={`mid-${i}`}
-					x={fan.x}
-					y={fan.y}
-					color="#556677"
-					scale={0.8}
-				/>
-			))}
-			{/* Opacity overlay for mid fans to show them fading */}
-			{MID_FANS.map((fan, i) => (
-				<Fan
-					key={`mid-fade-${i}`}
-					x={fan.x}
-					y={fan.y}
-					color="#556677"
-					scale={0.8}
-				/>
+				<g key={`mid-${i}`} opacity={midFanOpacity}>
+					<Fan x={fan.x} y={fan.y} color="#556677" scale={0.8} />
+				</g>
 			))}
 
 			{/* Merch table — small, tucked in bottom-right corner */}
@@ -728,90 +715,38 @@ const Checkmark: React.FC = () => (
 	</svg>
 );
 
-// ─── Equalizer SVG ──────────────────────────────────────────────────
-
-const EQ_BARS = 24;
-const EQ_WIDTH = 720;
-const EQ_HEIGHT = 400;
-const BAR_GAP = EQ_WIDTH / EQ_BARS;
-const BAR_W = BAR_GAP * 0.55;
-
-const barHeight = (i: number, t: number): number => {
-	// Each bar has its own frequency/phase for organic movement
-	const freq1 = 0.08 + (i % 5) * 0.015;
-	const freq2 = 0.05 + (i % 3) * 0.02;
-	const phase = i * 0.7;
-	const wave =
-		Math.sin(t * freq1 + phase) * 0.4 +
-		Math.sin(t * freq2 + phase * 1.3) * 0.3 +
-		0.3;
-	// Center bars taller on average
-	const center = 1 - Math.abs(i - EQ_BARS / 2) / (EQ_BARS / 2);
-	return (0.15 + wave * 0.85) * (0.4 + center * 0.6) * EQ_HEIGHT;
-};
-
-const EqualizerSvg: React.FC<{ frame: number; fadeIn: number }> = ({
-	frame,
-	fadeIn,
-}) => {
-	return (
-		<svg
-			width={EQ_WIDTH}
-			height={EQ_HEIGHT}
-			viewBox={`0 0 ${EQ_WIDTH} ${EQ_HEIGHT}`}
-			style={{ opacity: fadeIn }}
-		>
-			{Array.from({ length: EQ_BARS }, (_, i) => {
-				const h = barHeight(i, frame) * fadeIn;
-				const x = i * BAR_GAP + (BAR_GAP - BAR_W) / 2;
-				const y = EQ_HEIGHT - h;
-				// Gold in center, fading to muted at edges
-				const center = 1 - Math.abs(i - EQ_BARS / 2) / (EQ_BARS / 2);
-				const alpha = 0.3 + center * 0.7;
-				return (
-					<rect
-						key={i}
-						x={x}
-						y={y}
-						width={BAR_W}
-						height={h}
-						rx={BAR_W / 2}
-						fill={GOLD}
-						opacity={alpha}
-					/>
-				);
-			})}
-		</svg>
-	);
-};
-
 // ─── Scene Components ────────────────────────────────────────────────
 
-const MusiciansOpener: React.FC = () => {
+const VenueFramingOpener: React.FC = () => {
 	const frame = useCurrentFrame();
 	const { fps } = useVideoConfig();
 
-	const titleScale = interpolate(
+	const numScale = interpolate(
 		spring({ frame, fps, config: { stiffness: 120, damping: 14 } }),
 		[0, 1],
-		[0.6, 1],
+		[0.4, 1],
 	);
-	const titleOpacity = interpolate(frame, [0, 12], [0, 1], {
+	const numOpacity = interpolate(frame, [0, 10], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
 
-	const eqFadeIn = interpolate(frame, [8, 28], [0, 1], {
+	const titleOpacity = interpolate(frame, [8, 22], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
+	const titleY = interpolate(
+		spring({ frame: Math.max(0, frame - 8), fps, config: SPRING_CONFIG }),
+		[0, 1],
+		[40, 0],
+	);
 
-	const subOpacity = interpolate(frame, [25, 40], [0, 1], {
+	const subOpacity = interpolate(frame, [30, 45], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
 	});
 	const subY = interpolate(
-		spring({ frame: Math.max(0, frame - 25), fps, config: SPRING_CONFIG }),
+		spring({ frame: Math.max(0, frame - 30), fps, config: SPRING_CONFIG }),
 		[0, 1],
 		[30, 0],
 	);
@@ -827,77 +762,43 @@ const MusiciansOpener: React.FC = () => {
 		>
 			<div
 				style={{
-					transform: `scale(${titleScale})`,
-					opacity: titleOpacity,
-					fontSize: 80,
+					transform: `scale(${numScale})`,
+					opacity: numOpacity,
+					fontSize: 160,
 					fontWeight: 700,
-					color: "white",
+					color: GOLD,
 					fontFamily: displayFont,
+					lineHeight: 1,
 				}}
 			>
-				MUSICIANS
-			</div>
-			<div style={{ marginTop: 40 }}>
-				<EqualizerSvg frame={frame} fadeIn={eqFadeIn} />
+				3
 			</div>
 			<div
 				style={{
-					marginTop: 36,
+					marginTop: 16,
+					fontSize: 64,
+					fontWeight: 700,
+					color: "white",
+					fontFamily: displayFont,
+					opacity: titleOpacity,
+					transform: `translateY(${titleY}px)`,
+					textAlign: "center",
+				}}
+			>
+				types of venues.
+			</div>
+			<div
+				style={{
+					marginTop: 28,
 					fontSize: 34,
 					fontWeight: 500,
 					color: TEXT_SECONDARY,
 					opacity: subOpacity,
 					transform: `translateY(${subY}px)`,
+					textAlign: "center",
 				}}
 			>
-				Stop losing fans at the door.
-			</div>
-		</AbsoluteFill>
-	);
-};
-
-const HookCard: React.FC = () => {
-	const frame = useCurrentFrame();
-	const { fps } = useVideoConfig();
-
-	const scale = interpolate(
-		spring({ frame, fps, config: { stiffness: 120, damping: 14 } }),
-		[0, 1],
-		[0.85, 1],
-	);
-
-	const subOpacity = interpolate(frame, [35, 50], [0, 1], {
-		extrapolateRight: "clamp",
-		extrapolateLeft: "clamp",
-	});
-
-	return (
-		<AbsoluteFill
-			style={{
-				backgroundColor: BG,
-				fontFamily,
-				justifyContent: "center",
-				alignItems: "center",
-			}}
-		>
-			<div style={{ transform: `scale(${scale})`, textAlign: "center" }}>
-				<div style={{ fontSize: 80, fontWeight: 700, color: "white", fontFamily: displayFont }}>
-					One QR code
-				</div>
-				<div style={{ fontSize: 80, fontWeight: 700, color: GOLD, fontFamily: displayFont }}>
-					isn't enough.
-				</div>
-			</div>
-			<div
-				style={{
-					fontSize: 36,
-					color: TEXT_SECONDARY,
-					marginTop: 32,
-					opacity: subOpacity,
-					fontWeight: 500,
-				}}
-			>
-				Here's why.
+				Each one breaks a different capture method.
 			</div>
 		</AbsoluteFill>
 	);
@@ -920,8 +821,8 @@ const DiveBarScene: React.FC = () => {
 	return (
 		<VenueCard
 			bgColor="#0d1220"
-			label="🍺  Dive Bar"
-			headline={["The room is packed.", "Nobody can scan your QR."]}
+			label="VENUE 1 / 3  ·  🍺 Dive Bar"
+			headline={["Too dark for QR codes."]}
 		>
 			<div
 				style={{
@@ -952,8 +853,6 @@ const DiveBarScene: React.FC = () => {
 
 const BigRoomScene: React.FC = () => {
 	const frame = useCurrentFrame();
-	const { fps } = useVideoConfig();
-
 	const diagramOpacity = interpolate(frame, [30, 40], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
@@ -967,8 +866,8 @@ const BigRoomScene: React.FC = () => {
 	return (
 		<VenueCard
 			bgColor="#0a1024"
-			label="🎸  300-Cap Room"
-			headline={["The crowd is there.", "Your merch table isn't."]}
+			label="VENUE 2 / 3  ·  🎸 Packed Room"
+			headline={["Nobody walks to", "the merch table."]}
 		>
 			<div
 				style={{
@@ -998,7 +897,6 @@ const BigRoomScene: React.FC = () => {
 
 const FestivalScene: React.FC = () => {
 	const frame = useCurrentFrame();
-
 	const distOpacity = interpolate(frame, [30, 40], [0, 1], {
 		extrapolateRight: "clamp",
 		extrapolateLeft: "clamp",
@@ -1012,8 +910,8 @@ const FestivalScene: React.FC = () => {
 	return (
 		<VenueCard
 			bgColor="#0b1118"
-			label="🌤️  Outdoor Festival"
-			headline={["Your poster has a QR code.", "It's 50 feet from the crowd."]}
+			label="VENUE 3 / 3  ·  🌤️ Festival Stage"
+			headline={["Your QR code is", "50 feet away."]}
 		>
 			<div
 				style={{
@@ -1055,14 +953,26 @@ const TransitionCard: React.FC = () => {
 		>
 			<div
 				style={{
-					fontSize: 56,
-					fontWeight: 700,
-					color: "white",
 					opacity,
 					textAlign: "center",
 				}}
 			>
-				<span style={{ fontFamily: displayFont }}>So what actually works?</span>
+				{["Three venues.", "Three methods.", "Zero excuses."].map(
+					(line, i) => (
+						<div
+							key={line}
+							style={{
+								fontSize: 56,
+								fontWeight: 700,
+								color: i === 2 ? GOLD : "white",
+								fontFamily: displayFont,
+								lineHeight: 1.4,
+							}}
+						>
+							{line}
+						</div>
+					),
+				)}
 			</div>
 		</AbsoluteFill>
 	);
@@ -1306,30 +1216,42 @@ const CtaCard: React.FC = () => {
 export const ThreeVenues: React.FC = () => {
 	return (
 		<AbsoluteFill>
-			<Sequence from={0} durationInFrames={60}>
-				<MusiciansOpener />
+			{/* Opener: "3 types of venues" (2.5s) */}
+			<Sequence from={0} durationInFrames={75}>
+				<VenueFramingOpener />
 			</Sequence>
-			<Sequence from={60} durationInFrames={60}>
-				<HookCard />
-			</Sequence>
-			<Sequence from={120} durationInFrames={105}>
+
+			{/* Venue 1: Dive Bar (4s) */}
+			<Sequence from={75} durationInFrames={120}>
 				<DiveBarScene />
 			</Sequence>
-			<Sequence from={225} durationInFrames={135}>
+
+			{/* Venue 2: Packed Room (4.5s) */}
+			<Sequence from={195} durationInFrames={135}>
 				<BigRoomScene />
 			</Sequence>
-			<Sequence from={360} durationInFrames={120}>
+
+			{/* Venue 3: Festival Stage (4s) */}
+			<Sequence from={330} durationInFrames={120}>
 				<FestivalScene />
 			</Sequence>
-			<Sequence from={480} durationInFrames={45}>
+
+			{/* Payoff: "Three venues. Three methods. Zero excuses." (2s) */}
+			<Sequence from={450} durationInFrames={60}>
 				<TransitionCard />
 			</Sequence>
-			<Sequence from={525} durationInFrames={135}>
+
+			{/* Solution: QR + SMS + NFC (4.5s) */}
+			<Sequence from={510} durationInFrames={135}>
 				<SolutionCard />
 			</Sequence>
-			<Sequence from={660} durationInFrames={90}>
+
+			{/* CTA (3.5s) */}
+			<Sequence from={645} durationInFrames={105}>
 				<CtaCard />
 			</Sequence>
+
+			<LinkInBio delayFrames={0} />
 		</AbsoluteFill>
 	);
 };
