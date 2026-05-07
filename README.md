@@ -1,8 +1,8 @@
 # Remotion Video Pipeline
 
-A programmatic video factory that turns typed JSON into broadcast-ready vertical videos. Code in, MP4 out — every frame deterministic, every animation a pure function of time.
+A programmatic video factory that turns JSON scene data into broadcast-ready vertical videos. Code in, MP4 out. Every frame deterministic, every animation a pure function of time.
 
-Built with **Remotion 4**, **React 18**, **TypeScript**, and **Zod**. Currently producing the launch campaign for [Afterset](https://afterset.net), a music-tech brand.
+Built with **Remotion 4**, **React 18**, **TypeScript**, and **Zod**. The pipeline is brand-agnostic: point it at any theme and scene data and it produces broadcast-ready vertical video. Originally used to produce marketing content for [Afterset](https://afterset.net), a music-tech brand.
 
 ```
 JSON scene data  ──►  Zod-validated React tree  ──►  Frame-perfect MP4
@@ -13,15 +13,15 @@ JSON scene data  ──►  Zod-validated React tree  ──►  Frame-perfect M
 
 ## Why this exists
 
-Short-form video is now infrastructure. Brands ship 10+ vertical cuts a week across TikTok, Reels, and Shorts — the bottleneck isn't ideas, it's production. Editors don't scale, AE templates don't version-control, and design tools don't compose.
+Short-form video is now infrastructure. Brands ship 10+ vertical cuts a week across TikTok, Reels, and Shorts, and the bottleneck isn't ideas, it's production. Editors don't scale, AE templates don't version-control, and design tools don't compose.
 
 This project treats video as software:
 
-- **Composable** — scenes, primitives, and themes combine like React components
-- **Deterministic** — every render is reproducible from the same JSON + git SHA
-- **Type-safe** — Zod discriminated unions validate scene data at the studio boundary
-- **Branded** — themes and shared visual grammar enforce identity across a campaign
-- **Renderable in parallel** — one source produces TikTok, Reels, and Shorts variants
+- **Composable**: scenes, primitives, and themes combine like React components
+- **Deterministic**: every render is reproducible from the same JSON + git SHA
+- **Type-safe**: Zod discriminated unions validate scene data at the studio boundary
+- **Branded**: themes and shared visual grammar enforce identity across a campaign
+- **Renderable in parallel**: one source produces TikTok, Reels, and Shorts variants
 
 The result: a designer writes JSON, a CI job renders three platform-specific cuts, and the visual system stays consistent across an entire video series.
 
@@ -67,19 +67,19 @@ The result: a designer writes JSON, a CI job renders three platform-specific cut
 
 **Three layers, each replaceable:**
 
-1. **Primitives** — pure animation components (spring physics, frame-driven interpolation, SVG graphics). No CSS transitions, no `setTimeout`, no random — every value derives from `useCurrentFrame()`.
-2. **Scenes & Templates** — `SceneRenderer` dispatches a scene type to the right primitive; templates sequence scenes with `TransitionSeries`.
-3. **Compositions** — per-video creative direction (custom overlays, screen-shake on stat hits, white flash on emotional beats, signature SVGs that own each video's concept).
+1. **Primitives**: pure animation components (spring physics, frame-driven interpolation, SVG graphics). No CSS transitions, no `setTimeout`, no random. Every value derives from `useCurrentFrame()`.
+2. **Scenes & Templates**: `SceneRenderer` dispatches a scene type to the right primitive; templates sequence scenes with `TransitionSeries`.
+3. **Compositions**: per-video creative direction (custom overlays, screen-shake on stat hits, white flash on emotional beats, signature SVGs that own each video's concept).
 
 ---
 
 ## Engineering highlights
 
-**Pure-function rendering model.** Components are forbidden from holding accumulated state — every pixel at frame `f` is derived from `f` alone. This is what makes scrubbing, parallel rendering, and exact reproducibility possible.
+**Pure-function rendering model.** Components are forbidden from holding accumulated state. Every pixel at frame `f` is derived from `f` alone. This is what makes scrubbing, parallel rendering, and exact reproducibility possible.
 
 **Discriminated-union scene schema.** Nine scene types (`title`, `bullets`, `stat`, `stat-reveal`, `comparison`, `cta`, `quote`, `kinetic`, `beforeAfter`) live behind a single Zod `discriminatedUnion`. The studio validates props at the boundary; downstream code reads exhaustive, narrowed types.
 
-**Spring-driven motion design.** Animations use `spring({frame, fps, config})` as a 0→1 driver, then `interpolate()` maps that to any visual range — opacity, transform, color. Configs are tuned per use case:
+**Spring-driven motion design.** Animations use `spring({frame, fps, config})` as a 0→1 driver, then `interpolate()` maps that to any visual range: opacity, transform, color. Configs are tuned per use case:
 
 ```ts
 // Standard entrance
@@ -109,7 +109,7 @@ The result: a designer writes JSON, a CI job renders three platform-specific cut
 |---|---|
 | Rendering | Remotion 4.0.435 (Chromium-based, headless H.264) |
 | UI | React 18, TypeScript 5.7 (strict, no `any`) |
-| Validation | Zod 4 — discriminated unions for scenes |
+| Validation | Zod 4 (discriminated unions for scenes) |
 | Transitions | `@remotion/transitions` (TransitionSeries) |
 | Typography | `@remotion/google-fonts` (DM Sans, Bricolage Grotesque, Space Mono) |
 | Audio | `Html5Audio` with frame-driven volume envelopes |
@@ -131,7 +131,7 @@ Pick a composition in the studio sidebar, scrub the timeline, edit JSON in `publ
 
 ## Authoring a video
 
-**1. Write the scene data** — `public/data/your-video.json`:
+**1. Write the scene data** in `public/data/your-video.json`:
 
 ```json
 {
@@ -154,7 +154,7 @@ Pick a composition in the studio sidebar, scrub the timeline, edit JSON in `publ
 
 Frame math: `frames = seconds × 30`. A 30-second video is 900 frames.
 
-**2. Register a composition** in `src/Root.tsx` — pick a template (or write a bespoke composition for custom overlays) and pass theme + scenes.
+**2. Register a composition** in `src/Root.tsx`. Pick a template (or write a bespoke composition for custom overlays) and pass theme + scenes.
 
 **3. Render**:
 
@@ -181,7 +181,7 @@ npx remotion render TheMathProblem out/v1.mp4 --codec=h264 --crf=18
 | `comparison` | Split-screen left (red/danger) vs right (gold) |
 | `quote` | Glass card with decorative quote mark + attribution |
 | `cta` | Closing call-to-action + subtext |
-| `kinetic` | Sequenced word beats — 4 animation styles, configurable emphasis word/color, optional `verticalPosition` |
+| `kinetic` | Sequenced word beats with 4 animation styles, configurable emphasis word/color, optional `verticalPosition` |
 | `beforeAfter` | Temporal before→after with gold wipe at midpoint |
 
 Every scene is wrapped in `SceneBackground` (dual ambient glows + CRT scan lines) and every video carries the `LinkInBio` watermark.
@@ -212,15 +212,15 @@ CLAUDE.md                   architectural rules + Remotion 4 gotchas
 
 ---
 
-## Production status
+## Case study: Afterset
 
-Currently shipping the **Afterset** launch series — four videos built, one in iteration, all under the same theme:
+The first campaign built on the pipeline. Five videos produced for [Afterset](https://afterset.net), a music-tech brand. All five share one theme and one set of primitives; each video gets a signature SVG that owns its concept.
 
 | # | Video | Composition | Concept |
 |---|---|---|---|
-| 1 | The Math Problem | `TheMathProblem` | DecayBar + CrowdGrid — fans you've already lost |
-| 2 | Fifteen-Minute Window | `FifteenMinuteWindow` | CountdownRing — the closing-time capture window |
-| 3 | Fan Evaporation Numbers | `FanEvaporationNumbers` | FunnelDrain + DotGridBleed — leakage as physics |
+| 1 | The Math Problem | `TheMathProblem` | DecayBar + CrowdGrid: fans you've already lost |
+| 2 | Fifteen-Minute Window | `FifteenMinuteWindow` | CountdownRing: the closing-time capture window |
+| 3 | Fan Evaporation Numbers | `FanEvaporationNumbers` | FunnelDrain + DotGridBleed: leakage as physics |
 | 4 | Three Venues | `ThreeVenues` | Standalone single-file vignette comp |
 | 5 | Screen Recording | `ScreenRecordingVideo` | Animated callout overlays on captured demo |
 
@@ -228,9 +228,9 @@ Currently shipping the **Afterset** launch series — four videos built, one in 
 
 ## Constraints worth knowing
 
-- **No native media tags** — `<Img>` / `<OffthreadVideo>` / `<Html5Audio>` only (Remotion needs to control loading per frame).
-- **No `Math.random()`** — use `random()` from `remotion` for deterministic output.
-- **No CSS animations or `setTimeout`** — all motion via `interpolate` + `spring`; all timing via `<Sequence from={N}>`.
+- **No native media tags**: `<Img>` / `<OffthreadVideo>` / `<Html5Audio>` only (Remotion needs to control loading per frame).
+- **No `Math.random()`**: use `random()` from `remotion` for deterministic output.
+- **No CSS animations or `setTimeout`**: all motion via `interpolate` + `spring`; all timing via `<Sequence from={N}>`.
 - **`interpolate` input ranges must be strictly monotonic** and clamped on visual props (`extrapolateRight: 'clamp'`).
 - **Functions ≤ 40 lines, ≤ 4 params** (project-wide rule); type-check after every change.
 
